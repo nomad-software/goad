@@ -10,34 +10,34 @@ func New[T constraint.BuiltinTypes]() Queue[T] {
 	return Queue[T]{}
 }
 
-func (s *Queue[T]) Count() int {
-	return len(s.data)
+func (q *Queue[T]) Count() int {
+	return len(q.data)
 }
 
-func (s *Queue[T]) Empty() bool {
-	return s.Count() == 0
+func (q *Queue[T]) Empty() bool {
+	return q.Count() == 0
 }
 
-func (s *Queue[T]) Enqueue(val T) {
-	s.data = append(s.data, val)
+func (q *Queue[T]) Enqueue(val T) {
+	q.data = append(q.data, val)
 }
 
-func (s *Queue[T]) Peek() T {
-	return s.data[0]
+func (q *Queue[T]) Peek() T {
+	return q.data[0]
 }
 
-func (s *Queue[T]) Dequeue() T {
-	if s.Empty() {
+func (q *Queue[T]) Dequeue() T {
+	if q.Empty() {
 		panic("queue empty, popping failed")
 	}
 
-	val := s.data[0]
-	s.data = s.data[1:s.Count()]
+	val := q.data[0]
+	q.data = q.data[1:q.Count()]
 	return val
 }
 
-func (s *Queue[T]) Contains(needle T) bool {
-	for _, v := range s.data {
+func (q *Queue[T]) Contains(needle T) bool {
+	for _, v := range q.data {
 		if v == needle {
 			return true
 		}

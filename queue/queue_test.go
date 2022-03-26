@@ -9,44 +9,46 @@ import (
 func TestNew(t *testing.T) {
 	t.Parallel()
 
-	s := New[int]()
-	s.Enqueue(1)
-	s.Enqueue(2)
-	s.Enqueue(3)
+	q := New[int]()
+	q.Enqueue(1)
+	q.Enqueue(2)
+	q.Enqueue(3)
 
-	assert.Eq(t, s.Count(), 3)
-	assert.Eq(t, s.Dequeue(), 1)
-	assert.Eq(t, s.Peek(), 2)
-	assert.Eq(t, s.Dequeue(), 2)
-	assert.Eq(t, s.Dequeue(), 3)
+	assert.Eq(t, q.Empty(), false)
+	assert.Eq(t, q.Count(), 3)
+	assert.Eq(t, q.Dequeue(), 1)
+	assert.Eq(t, q.Peek(), 2)
+	assert.Eq(t, q.Dequeue(), 2)
+	assert.Eq(t, q.Dequeue(), 3)
+	assert.Eq(t, q.Empty(), true)
 }
 
 func TestLargeCapacity(t *testing.T) {
 	t.Parallel()
 
-	s := New[int]()
+	q := New[int]()
 	limit := 1_000_000
 
 	for i := 1; i <= limit; i++ {
-		s.Enqueue(i)
-		assert.Eq(t, s.Peek(), 1)
-		assert.Eq(t, s.Count(), i)
+		q.Enqueue(i)
+		assert.Eq(t, q.Peek(), 1)
+		assert.Eq(t, q.Count(), i)
 	}
 
-	assert.Eq(t, s.Peek(), 1)
-	assert.Eq(t, s.Count(), limit)
-	assert.Eq(t, s.Contains(1), true)
-	assert.Eq(t, s.Contains(limit), true)
-	assert.Eq(t, s.Empty(), false)
+	assert.Eq(t, q.Peek(), 1)
+	assert.Eq(t, q.Count(), limit)
+	assert.Eq(t, q.Contains(1), true)
+	assert.Eq(t, q.Contains(limit), true)
+	assert.Eq(t, q.Empty(), false)
 
 	for i := 1; i <= limit; i++ {
-		assert.Eq(t, s.Peek(), i)
-		assert.Eq(t, s.Dequeue(), i)
-		assert.Eq(t, s.Count(), limit-i)
+		assert.Eq(t, q.Peek(), i)
+		assert.Eq(t, q.Dequeue(), i)
+		assert.Eq(t, q.Count(), limit-i)
 	}
 
-	assert.Eq(t, s.Empty(), true)
-	assert.Eq(t, s.Count(), 0)
+	assert.Eq(t, q.Empty(), true)
+	assert.Eq(t, q.Count(), 0)
 }
 
 func TestFailedPop(t *testing.T) {
@@ -58,48 +60,48 @@ func TestFailedPop(t *testing.T) {
 		}
 	}()
 
-	s := New[string]()
-	s.Dequeue()
+	q := New[string]()
+	q.Dequeue()
 }
 
 func TestContains(t *testing.T) {
 	t.Parallel()
 
-	s := New[string]()
-	s.Enqueue("foo")
-	s.Enqueue("bar")
-	s.Enqueue("baz")
-	s.Enqueue("qux")
+	q := New[string]()
+	q.Enqueue("foo")
+	q.Enqueue("bar")
+	q.Enqueue("baz")
+	q.Enqueue("qux")
 
-	assert.Eq(t, s.Contains("bar"), true)
-	assert.Eq(t, s.Contains("fuz"), false)
+	assert.Eq(t, q.Contains("bar"), true)
+	assert.Eq(t, q.Contains("fuz"), false)
 }
 
 func TestClearing(t *testing.T) {
 	t.Parallel()
 
-	s := New[int]()
-	s.Enqueue(1)
-	s.Enqueue(2)
-	s.Enqueue(3)
-	assert.Eq(t, s.Count(), 3)
+	q := New[int]()
+	q.Enqueue(1)
+	q.Enqueue(2)
+	q.Enqueue(3)
+	assert.Eq(t, q.Count(), 3)
 
-	s.Clear()
-	assert.Eq(t, s.Count(), 0)
+	q.Clear()
+	assert.Eq(t, q.Count(), 0)
 
-	s.Enqueue(1)
-	s.Enqueue(2)
-	assert.Eq(t, s.Count(), 2)
+	q.Enqueue(1)
+	q.Enqueue(2)
+	assert.Eq(t, q.Count(), 2)
 }
 
 func BenchmarkStack(b *testing.B) {
-	s := New[int]()
+	q := New[int]()
 
 	b.ReportAllocs()
 	b.ResetTimer()
 
 	for x := 0; x < b.N; x++ {
-		s.Enqueue(1)
-		s.Dequeue()
+		q.Enqueue(1)
+		q.Dequeue()
 	}
 }
