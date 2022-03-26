@@ -14,11 +14,13 @@ func TestNew(t *testing.T) {
 	s.Push(2)
 	s.Push(3)
 
+	assert.Eq(t, s.Empty(), false)
 	assert.Eq(t, s.Count(), 3)
 	assert.Eq(t, s.Pop(), 3)
 	assert.Eq(t, s.Peek(), 2)
 	assert.Eq(t, s.Pop(), 2)
 	assert.Eq(t, s.Pop(), 1)
+	assert.Eq(t, s.Empty(), true)
 }
 
 func TestLargeCapacity(t *testing.T) {
