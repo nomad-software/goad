@@ -15,6 +15,33 @@ func TestNew(t *testing.T) {
 	assert.Eq(t, l.Empty(), true)
 }
 
+func TestLargeCapacity(t *testing.T) {
+	t.Parallel()
+
+	s := New[uint]()
+	limit := uint(1_000_000)
+
+	for i := uint(1); i <= limit; i++ {
+		s.InsertLast(i)
+		assert.Eq(t, s.Last(), i)
+		assert.Eq(t, s.Count(), i)
+	}
+
+	assert.Eq(t, s.Count(), limit)
+	assert.Eq(t, s.Contains(1), true)
+	assert.Eq(t, s.Contains(limit), true)
+	assert.Eq(t, s.Empty(), false)
+
+	for i := limit; i >= 1; i-- {
+		assert.Eq(t, s.Count(), i)
+		assert.Eq(t, s.Last(), i)
+		s.RemoveLast()
+	}
+
+	assert.Eq(t, s.Empty(), true)
+	assert.Eq(t, s.Count(), 0)
+}
+
 func TestInsertFirst(t *testing.T) {
 	t.Parallel()
 
@@ -46,6 +73,19 @@ func TestInsertFirst(t *testing.T) {
 	l.RemoveFirst()
 	assert.Eq(t, l.Count(), 0)
 	assert.Eq(t, l.Empty(), true)
+}
+
+func TestFailedFirst(t *testing.T) {
+	t.Parallel()
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("no panic detected")
+		}
+	}()
+
+	q := New[string]()
+	q.First()
 }
 
 func TestInsertLast(t *testing.T) {
@@ -81,6 +121,19 @@ func TestInsertLast(t *testing.T) {
 	assert.Eq(t, l.Empty(), true)
 }
 
+func TestFailedLast(t *testing.T) {
+	t.Parallel()
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("no panic detected")
+		}
+	}()
+
+	q := New[string]()
+	q.Last()
+}
+
 func TestInsert(t *testing.T) {
 	t.Parallel()
 
@@ -111,6 +164,32 @@ func TestInsert(t *testing.T) {
 	assert.Eq(t, l.Empty(), false)
 }
 
+func TestFailedInsert(t *testing.T) {
+	t.Parallel()
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("no panic detected")
+		}
+	}()
+
+	q := New[string]()
+	q.Insert("foo", 1)
+}
+
+func TestFailedGet(t *testing.T) {
+	t.Parallel()
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("no panic detected")
+		}
+	}()
+
+	q := New[string]()
+	q.Get(1)
+}
+
 func TestUpdate(t *testing.T) {
 	t.Parallel()
 
@@ -135,6 +214,19 @@ func TestUpdate(t *testing.T) {
 
 	assert.Eq(t, l.Count(), 4)
 	assert.Eq(t, l.Empty(), false)
+}
+
+func TestFailedUpdate(t *testing.T) {
+	t.Parallel()
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("no panic detected")
+		}
+	}()
+
+	q := New[string]()
+	q.Update("foo", 1)
 }
 
 func TestRemove(t *testing.T) {
@@ -175,6 +267,19 @@ func TestRemove(t *testing.T) {
 	assert.Eq(t, l.Count(), 2)
 }
 
+func TestFailedRemove(t *testing.T) {
+	t.Parallel()
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("no panic detected")
+		}
+	}()
+
+	q := New[string]()
+	q.Remove(1)
+}
+
 func TestContains(t *testing.T) {
 	t.Parallel()
 
@@ -212,7 +317,7 @@ func TestClear(t *testing.T) {
 	assert.Eq(t, l.Empty(), false)
 }
 
-func TestRange(t *testing.T) {
+func TestForEach(t *testing.T) {
 	t.Parallel()
 
 	l := New[int]()
@@ -224,8 +329,13 @@ func TestRange(t *testing.T) {
 	l.InsertLast(5)
 
 	i := 1
-	l.Range(func(val int) {
+	l.ForEach(func(val int) {
 		assert.Eq(t, val, i)
 		i++
+	})
+
+	l.Clear()
+	l.ForEach(func(val int) {
+		t.Errorf("linked list not cleared")
 	})
 }

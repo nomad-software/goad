@@ -15,14 +15,14 @@ type node[T constraint.BuiltinTypes] struct {
 type LinkedList[T constraint.BuiltinTypes] struct {
 	first *node[T]
 	last  *node[T]
-	count int
+	count uint
 }
 
 func New[T constraint.BuiltinTypes]() LinkedList[T] {
 	return LinkedList[T]{}
 }
 
-func (l *LinkedList[T]) Count() int {
+func (l *LinkedList[T]) Count() uint {
 	return l.count
 }
 
@@ -104,8 +104,8 @@ func (l *LinkedList[T]) RemoveLast() {
 	l.count--
 }
 
-func (l *LinkedList[T]) Insert(val T, index int) {
-	if index < 0 || index > l.Count() {
+func (l *LinkedList[T]) Insert(val T, index uint) {
+	if index > l.Count() {
 		panic("Insertion index invalid")
 	}
 
@@ -118,7 +118,7 @@ func (l *LinkedList[T]) Insert(val T, index int) {
 	} else {
 		n := &node[T]{val: val}
 
-		listIndex := 0
+		var listIndex uint = 0
 		for ln := l.first; ln != nil; ln = ln.next {
 			if listIndex == index {
 				ln.prev.next = n
@@ -134,8 +134,8 @@ func (l *LinkedList[T]) Insert(val T, index int) {
 	}
 }
 
-func (l *LinkedList[T]) Get(index int) T {
-	if index < 0 || index >= l.Count() {
+func (l *LinkedList[T]) Get(index uint) T {
+	if index >= l.Count() {
 		panic("Index outside of linked list bounds")
 	}
 
@@ -146,7 +146,7 @@ func (l *LinkedList[T]) Get(index int) T {
 		return l.last.val
 
 	} else {
-		listIndex := 0
+		var listIndex uint = 0
 		for ln := l.first; ln != nil; ln = ln.next {
 			if listIndex == index {
 				return ln.val
@@ -158,12 +158,12 @@ func (l *LinkedList[T]) Get(index int) T {
 	panic("Index outside of linked list bounds")
 }
 
-func (l *LinkedList[T]) Update(val T, index int) {
-	if index < 0 || index >= l.Count() {
+func (l *LinkedList[T]) Update(val T, index uint) {
+	if index >= l.Count() {
 		panic("Index outside of linked list bounds")
 	}
 
-	listIndex := 0
+	var listIndex uint = 0
 	for ln := l.first; ln != nil; ln = ln.next {
 		if listIndex == index {
 			ln.val = val
@@ -173,12 +173,12 @@ func (l *LinkedList[T]) Update(val T, index int) {
 	}
 }
 
-func (l *LinkedList[T]) Remove(index int) {
+func (l *LinkedList[T]) Remove(index uint) {
 	if l.Count() == 0 {
 		panic("Linked list is empty")
 	}
 
-	if index < 0 || index >= l.Count() {
+	if index >= l.Count() {
 		panic("Index outside of linked list bounds")
 	}
 
@@ -189,7 +189,7 @@ func (l *LinkedList[T]) Remove(index int) {
 		l.RemoveLast()
 
 	} else {
-		listIndex := 0
+		var listIndex uint = 0
 		for ln := l.first; ln != nil; ln = ln.next {
 			if listIndex == index {
 				fmt.Printf("index: %v\n", listIndex)
@@ -220,7 +220,7 @@ func (l *LinkedList[T]) Clear() {
 	l.count = 0
 }
 
-func (l *LinkedList[T]) Range(f func(val T)) {
+func (l *LinkedList[T]) ForEach(f func(val T)) {
 	for ln := l.first; ln != nil; ln = ln.next {
 		f(ln.val)
 	}
