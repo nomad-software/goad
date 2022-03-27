@@ -6,30 +6,36 @@ import (
 	"github.com/nomad-software/goad/constraint"
 )
 
+// Node is the node type used within the linked list.
 type node[T constraint.BuiltinTypes] struct {
 	prev *node[T]
 	next *node[T]
 	val  T
 }
 
+// LinkedList is the main linked list type.
 type LinkedList[T constraint.BuiltinTypes] struct {
 	first *node[T]
 	last  *node[T]
 	count uint
 }
 
+// New is used to create a new linked list.
 func New[T constraint.BuiltinTypes]() LinkedList[T] {
 	return LinkedList[T]{}
 }
 
+// Count returns the amount of entries in the linked list.
 func (l *LinkedList[T]) Count() uint {
 	return l.count
 }
 
+// Empty returns true if the linked list is empty, false if not.
 func (l *LinkedList[T]) Empty() bool {
 	return l.Count() == 0
 }
 
+// InsertFirst inserts a value at the beginning of the linked list.
 func (l *LinkedList[T]) InsertFirst(val T) {
 	n := &node[T]{val: val}
 
@@ -45,6 +51,7 @@ func (l *LinkedList[T]) InsertFirst(val T) {
 	l.count++
 }
 
+// First returns the value at the beginning of the linked list.
 func (l *LinkedList[T]) First() T {
 	if l.first == nil {
 		panic("linked list empty, getting first failed")
@@ -53,6 +60,7 @@ func (l *LinkedList[T]) First() T {
 	return l.first.val
 }
 
+// RemoveFirst removes the first value in the linked list.
 func (l *LinkedList[T]) RemoveFirst() {
 	if l.first != nil {
 		if l.first.next == nil {
@@ -67,6 +75,7 @@ func (l *LinkedList[T]) RemoveFirst() {
 	l.count--
 }
 
+// InsertLast inserts a value at the end of the linked list.
 func (l *LinkedList[T]) InsertLast(val T) {
 	n := &node[T]{val: val}
 
@@ -82,6 +91,7 @@ func (l *LinkedList[T]) InsertLast(val T) {
 	l.count++
 }
 
+// Last returns the value at the end of the linked list.
 func (l *LinkedList[T]) Last() T {
 	if l.last == nil {
 		panic("linked list empty, getting last failed")
@@ -90,6 +100,7 @@ func (l *LinkedList[T]) Last() T {
 	return l.last.val
 }
 
+// RemoveLast removes the last value in the linked list.
 func (l *LinkedList[T]) RemoveLast() {
 	if l.last != nil {
 		if l.last.prev == nil {
@@ -104,6 +115,7 @@ func (l *LinkedList[T]) RemoveLast() {
 	l.count--
 }
 
+// Insert inserts a value at the specified index.
 func (l *LinkedList[T]) Insert(val T, index uint) {
 	if index > l.Count() {
 		panic("Insertion index invalid")
@@ -134,6 +146,7 @@ func (l *LinkedList[T]) Insert(val T, index uint) {
 	}
 }
 
+// Get gets a value at the specified index.
 func (l *LinkedList[T]) Get(index uint) T {
 	if index >= l.Count() {
 		panic("Index outside of linked list bounds")
@@ -158,6 +171,7 @@ func (l *LinkedList[T]) Get(index uint) T {
 	panic("Index outside of linked list bounds")
 }
 
+// Update updates a value at the specified index.
 func (l *LinkedList[T]) Update(val T, index uint) {
 	if index >= l.Count() {
 		panic("Index outside of linked list bounds")
@@ -173,6 +187,7 @@ func (l *LinkedList[T]) Update(val T, index uint) {
 	}
 }
 
+// Remove removes a value at the specified index.
 func (l *LinkedList[T]) Remove(index uint) {
 	if l.Count() == 0 {
 		panic("Linked list is empty")
@@ -204,6 +219,7 @@ func (l *LinkedList[T]) Remove(index uint) {
 	}
 }
 
+// Contains returns true if the value exists in the linked list, false if not.
 func (l *LinkedList[T]) Contains(val T) bool {
 	for ln := l.first; ln != nil; ln = ln.next {
 		if ln.val == val {
@@ -214,12 +230,15 @@ func (l *LinkedList[T]) Contains(val T) bool {
 	return false
 }
 
+// Clear empties the entire linked list.
 func (l *LinkedList[T]) Clear() {
 	l.first = nil
 	l.last = nil
 	l.count = 0
 }
 
+// ForEach iterates over the dataset within the linked list, calling the passed
+// function for each value.
 func (l *LinkedList[T]) ForEach(f func(val T)) {
 	for ln := l.first; ln != nil; ln = ln.next {
 		f(ln.val)
