@@ -94,7 +94,30 @@ func TestClearing(t *testing.T) {
 	assert.Eq(t, q.Count(), 2)
 }
 
-func BenchmarkStack(b *testing.B) {
+func TestForEach(t *testing.T) {
+	t.Parallel()
+
+	l := New[int]()
+
+	l.Enqueue(1)
+	l.Enqueue(2)
+	l.Enqueue(3)
+	l.Enqueue(4)
+	l.Enqueue(5)
+
+	i := 1
+	l.ForEach(func(val int) {
+		assert.Eq(t, val, i)
+		i++
+	})
+
+	l.Clear()
+	l.ForEach(func(val int) {
+		t.Errorf("queue not cleared")
+	})
+}
+
+func BenchmarkQueue(b *testing.B) {
 	q := New[int]()
 
 	b.ReportAllocs()

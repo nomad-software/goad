@@ -48,3 +48,9 @@ func (q *Queue[T]) Contains(needle T) bool {
 func (s *Queue[T]) Clear() {
 	s.data = s.data[:0]
 }
+
+func (l *Queue[T]) ForEach(f func(val T)) {
+	for _, v := range l.data {
+		f(v)
+	}
+}

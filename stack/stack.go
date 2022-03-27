@@ -50,3 +50,9 @@ func (s *Stack[T]) Contains(needle T) bool {
 func (s *Stack[T]) Clear() {
 	s.data = s.data[:0]
 }
+
+func (l *Stack[T]) ForEach(f func(val T)) {
+	for i := len(l.data) - 1; i >= 0; i-- {
+		f(l.data[i])
+	}
+}
