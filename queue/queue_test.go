@@ -97,22 +97,22 @@ func TestClearing(t *testing.T) {
 func TestForEach(t *testing.T) {
 	t.Parallel()
 
-	l := New[int]()
+	q := New[int]()
 
-	l.Enqueue(1)
-	l.Enqueue(2)
-	l.Enqueue(3)
-	l.Enqueue(4)
-	l.Enqueue(5)
+	q.Enqueue(1)
+	q.Enqueue(2)
+	q.Enqueue(3)
+	q.Enqueue(4)
+	q.Enqueue(5)
 
 	i := 1
-	l.ForEach(func(val int) {
+	q.ForEach(func(val int) {
 		assert.Eq(t, val, i)
 		i++
 	})
 
-	l.Clear()
-	l.ForEach(func(val int) {
+	q.Clear()
+	q.ForEach(func(val int) {
 		t.Errorf("queue not cleared")
 	})
 }

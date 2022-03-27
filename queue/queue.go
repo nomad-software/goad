@@ -53,14 +53,14 @@ func (q *Queue[T]) Contains(val T) bool {
 }
 
 // Clear empties the entire queue.
-func (s *Queue[T]) Clear() {
-	s.data = s.data[:0]
+func (q *Queue[T]) Clear() {
+	q.data = q.data[:0]
 }
 
 // ForEach iterates over the dataset within the queue, calling the passed
 // function for each value.
-func (l *Queue[T]) ForEach(f func(val T)) {
-	for _, v := range l.data {
+func (q *Queue[T]) ForEach(f func(val T)) {
+	for _, v := range q.data {
 		f(v)
 	}
 }

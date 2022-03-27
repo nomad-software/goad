@@ -62,8 +62,8 @@ func (s *Stack[T]) Clear() {
 
 // ForEach iterates over the dataset within the stack, calling the passed
 // function for each value.
-func (l *Stack[T]) ForEach(f func(val T)) {
-	for i := len(l.data) - 1; i >= 0; i-- {
-		f(l.data[i])
+func (s *Stack[T]) ForEach(f func(val T)) {
+	for i := len(s.data) - 1; i >= 0; i-- {
+		f(s.data[i])
 	}
 }

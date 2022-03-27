@@ -97,22 +97,22 @@ func TestClearing(t *testing.T) {
 func TestForEach(t *testing.T) {
 	t.Parallel()
 
-	l := New[int]()
+	s := New[int]()
 
-	l.Push(1)
-	l.Push(2)
-	l.Push(3)
-	l.Push(4)
-	l.Push(5)
+	s.Push(1)
+	s.Push(2)
+	s.Push(3)
+	s.Push(4)
+	s.Push(5)
 
-	i := l.Count()
-	l.ForEach(func(val int) {
+	i := s.Count()
+	s.ForEach(func(val int) {
 		assert.Eq(t, val, i)
 		i--
 	})
 
-	l.Clear()
-	l.ForEach(func(val int) {
+	s.Clear()
+	s.ForEach(func(val int) {
 		t.Errorf("stack not cleared")
 	})
 }
