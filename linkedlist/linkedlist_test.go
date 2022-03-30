@@ -246,6 +246,9 @@ func TestRemove(t *testing.T) {
 	assert.Eq(t, l.Get(3), 4)
 	assert.Eq(t, l.Get(4), 5)
 
+	assert.Eq(t, l.Count(), 5)
+	assert.Eq(t, l.Empty(), false)
+
 	l.Remove(4)
 	assert.Eq(t, l.Get(0), 1)
 	assert.Eq(t, l.Get(1), 2)
@@ -259,15 +262,19 @@ func TestRemove(t *testing.T) {
 	assert.Eq(t, l.Get(0), 2)
 	assert.Eq(t, l.Get(1), 3)
 	assert.Eq(t, l.Get(2), 4)
-	assert.Eq(t, l.Count(), 3)
 
-	l.Remove(2)
+	assert.Eq(t, l.Count(), 3)
+	assert.Eq(t, l.Empty(), false)
+
+	l.Remove(1)
 	assert.Eq(t, l.Get(0), 2)
-	assert.Eq(t, l.Get(1), 3)
+	assert.Eq(t, l.Get(1), 4)
+
 	assert.Eq(t, l.Count(), 2)
+	assert.Eq(t, l.Empty(), false)
 }
 
-func TestFailedRemove(t *testing.T) {
+func TestFailedRemoveOnEmptyList(t *testing.T) {
 	t.Parallel()
 
 	defer func() {
@@ -276,8 +283,22 @@ func TestFailedRemove(t *testing.T) {
 		}
 	}()
 
-	q := New[string]()
-	q.Remove(1)
+	l := New[string]()
+	l.Remove(1)
+}
+
+func TestFailedRemoveOutsideOfBounds(t *testing.T) {
+	t.Parallel()
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("no panic detected")
+		}
+	}()
+
+	l := New[string]()
+	l.InsertLast("foo")
+	l.Remove(5)
 }
 
 func TestContains(t *testing.T) {
@@ -338,4 +359,16 @@ func TestForEach(t *testing.T) {
 	l.ForEach(func(val int) {
 		t.Errorf("linked list not cleared")
 	})
+}
+
+func BenchmarkLinkedList(b *testing.B) {
+	s := New[int]()
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for x := 0; x < b.N; x++ {
+		s.InsertLast(x)
+		s.RemoveLast()
+	}
 }

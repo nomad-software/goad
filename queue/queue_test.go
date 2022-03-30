@@ -124,7 +124,7 @@ func BenchmarkQueue(b *testing.B) {
 	b.ResetTimer()
 
 	for x := 0; x < b.N; x++ {
-		q.Enqueue(1)
+		q.Enqueue(x)
 		q.Dequeue()
 	}
 }

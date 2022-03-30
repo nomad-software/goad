@@ -124,7 +124,7 @@ func BenchmarkStack(b *testing.B) {
 	b.ResetTimer()
 
 	for x := 0; x < b.N; x++ {
-		s.Push(1)
+		s.Push(x)
 		s.Pop()
 	}
 }
