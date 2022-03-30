@@ -1,8 +1,6 @@
 package linkedlist
 
 import (
-	"fmt"
-
 	"github.com/nomad-software/goad/constraint"
 )
 
@@ -149,7 +147,7 @@ func (l *LinkedList[T]) Insert(val T, index uint) {
 // Get gets a value at the specified index.
 func (l *LinkedList[T]) Get(index uint) T {
 	if index >= l.Count() {
-		panic("Index outside of linked list bounds")
+		panic("index outside of linked list bounds")
 	}
 
 	if index == 0 {
@@ -168,13 +166,13 @@ func (l *LinkedList[T]) Get(index uint) T {
 		}
 	}
 
-	panic("Index outside of linked list bounds")
+	panic("unreachable")
 }
 
 // Update updates a value at the specified index.
 func (l *LinkedList[T]) Update(val T, index uint) {
 	if index >= l.Count() {
-		panic("Index outside of linked list bounds")
+		panic("index outside of linked list bounds")
 	}
 
 	var listIndex uint = 0
@@ -190,11 +188,11 @@ func (l *LinkedList[T]) Update(val T, index uint) {
 // Remove removes a value at the specified index.
 func (l *LinkedList[T]) Remove(index uint) {
 	if l.Count() == 0 {
-		panic("Linked list is empty")
+		panic("linked list is empty")
 	}
 
 	if index >= l.Count() {
-		panic("Index outside of linked list bounds")
+		panic("index outside of linked list bounds")
 	}
 
 	if index == 0 {
@@ -207,7 +205,6 @@ func (l *LinkedList[T]) Remove(index uint) {
 		var listIndex uint = 0
 		for ln := l.first; ln != nil; ln = ln.next {
 			if listIndex == index {
-				fmt.Printf("index: %v\n", listIndex)
 				ln.prev.next = ln.next
 				ln.next.prev = ln.prev
 				break
