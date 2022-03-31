@@ -10,6 +10,7 @@ import (
 
 var isoTable = crc64.MakeTable(crc64.ISO)
 
+// Hash returns a 64bit unsigned integer hash for any value passed in.
 func Hash[T constraint.BuiltinTypes](val T) uint64 {
 	hash := crc64.New(isoTable)
 	buf := new(bytes.Buffer)
@@ -18,17 +19,22 @@ func Hash[T constraint.BuiltinTypes](val T) uint64 {
 	case int:
 		binary.Write(buf, binary.LittleEndian, int64(v))
 		hash.Write(buf.Bytes())
+
 	case uint:
 		binary.Write(buf, binary.LittleEndian, uint64(v))
 		hash.Write(buf.Bytes())
+
 	case uintptr:
 		binary.Write(buf, binary.LittleEndian, uint64(v))
 		hash.Write(buf.Bytes())
+
 	case string:
 		hash.Write([]byte(v))
+
 	default:
 		binary.Write(buf, binary.LittleEndian, v)
 		hash.Write(buf.Bytes())
+
 	}
 
 	return hash.Sum64()

@@ -4,6 +4,7 @@ import (
 	"testing"
 )
 
+// Eq is a helper function to test the equality of two similarly typed values.
 func Eq[T comparable](t *testing.T, actual T, expected T) {
 	t.Helper()
 
