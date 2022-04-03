@@ -1,16 +1,12 @@
 package stack
 
-import (
-	"github.com/nomad-software/goad/constraint"
-)
-
 // Stack is the main stack type.
-type Stack[T constraint.BuiltinTypes] struct {
+type Stack[T comparable] struct {
 	data []T
 }
 
 // New is used to create a new stack.
-func New[T constraint.BuiltinTypes]() Stack[T] {
+func New[T comparable]() Stack[T] {
 	return Stack[T]{}
 }
 
