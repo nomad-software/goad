@@ -1,30 +1,26 @@
 package linkedlist
 
-import (
-	"github.com/nomad-software/goad/constraint"
-)
-
 // Node is the node type used within the linked list.
-type node[T constraint.BuiltinTypes] struct {
+type node[T comparable] struct {
 	prev *node[T]
 	next *node[T]
 	val  T
 }
 
 // LinkedList is the main linked list type.
-type LinkedList[T constraint.BuiltinTypes] struct {
+type LinkedList[T comparable] struct {
 	first *node[T]
 	last  *node[T]
-	count uint
+	count int
 }
 
 // New is used to create a new linked list.
-func New[T constraint.BuiltinTypes]() LinkedList[T] {
+func New[T comparable]() LinkedList[T] {
 	return LinkedList[T]{}
 }
 
 // Count returns the amount of entries in the linked list.
-func (l *LinkedList[T]) Count() uint {
+func (l *LinkedList[T]) Count() int {
 	return l.count
 }
 
@@ -114,7 +110,7 @@ func (l *LinkedList[T]) RemoveLast() {
 }
 
 // Insert inserts a value at the specified index.
-func (l *LinkedList[T]) Insert(val T, index uint) {
+func (l *LinkedList[T]) Insert(val T, index int) {
 	if index > l.Count() {
 		panic("Insertion index invalid")
 	}
@@ -128,7 +124,7 @@ func (l *LinkedList[T]) Insert(val T, index uint) {
 	} else {
 		n := &node[T]{val: val}
 
-		var listIndex uint = 0
+		var listIndex int = 0
 		for ln := l.first; ln != nil; ln = ln.next {
 			if listIndex == index {
 				ln.prev.next = n
@@ -145,7 +141,7 @@ func (l *LinkedList[T]) Insert(val T, index uint) {
 }
 
 // Get gets a value at the specified index.
-func (l *LinkedList[T]) Get(index uint) T {
+func (l *LinkedList[T]) Get(index int) T {
 	if index >= l.Count() {
 		panic("index outside of linked list bounds")
 	}
@@ -157,7 +153,7 @@ func (l *LinkedList[T]) Get(index uint) T {
 		return l.last.val
 
 	} else {
-		var listIndex uint = 0
+		var listIndex int = 0
 		for ln := l.first; ln != nil; ln = ln.next {
 			if listIndex == index {
 				return ln.val
@@ -170,12 +166,12 @@ func (l *LinkedList[T]) Get(index uint) T {
 }
 
 // Update updates a value at the specified index.
-func (l *LinkedList[T]) Update(val T, index uint) {
+func (l *LinkedList[T]) Update(val T, index int) {
 	if index >= l.Count() {
 		panic("index outside of linked list bounds")
 	}
 
-	var listIndex uint = 0
+	var listIndex int = 0
 	for ln := l.first; ln != nil; ln = ln.next {
 		if listIndex == index {
 			ln.val = val
@@ -186,7 +182,7 @@ func (l *LinkedList[T]) Update(val T, index uint) {
 }
 
 // Remove removes a value at the specified index.
-func (l *LinkedList[T]) Remove(index uint) {
+func (l *LinkedList[T]) Remove(index int) {
 	if l.Count() == 0 {
 		panic("linked list is empty")
 	}
@@ -202,7 +198,7 @@ func (l *LinkedList[T]) Remove(index uint) {
 		l.RemoveLast()
 
 	} else {
-		var listIndex uint = 0
+		var listIndex int = 0
 		for ln := l.first; ln != nil; ln = ln.next {
 			if listIndex == index {
 				ln.prev.next = ln.next
