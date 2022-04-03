@@ -3,15 +3,15 @@ package hash
 import (
 	"bytes"
 	"encoding/binary"
+	"fmt"
 	"hash/crc64"
-
-	"github.com/nomad-software/goad/constraint"
+	"unsafe"
 )
 
 var isoTable = crc64.MakeTable(crc64.ISO)
 
 // Hash returns a 64bit unsigned integer hash for any value passed in.
-func Hash[T constraint.BuiltinTypes](val T) uint64 {
+func Hash[T comparable](val T) uint64 {
 	hash := crc64.New(isoTable)
 	buf := new(bytes.Buffer)
 
@@ -20,8 +20,16 @@ func Hash[T constraint.BuiltinTypes](val T) uint64 {
 		binary.Write(buf, binary.LittleEndian, int64(v))
 		hash.Write(buf.Bytes())
 
+	case *int:
+		binary.Write(buf, binary.LittleEndian, uint64(uintptr(unsafe.Pointer(v))))
+		hash.Write(buf.Bytes())
+
 	case uint:
 		binary.Write(buf, binary.LittleEndian, uint64(v))
+		hash.Write(buf.Bytes())
+
+	case *uint:
+		binary.Write(buf, binary.LittleEndian, uint64(uintptr(unsafe.Pointer(v))))
 		hash.Write(buf.Bytes())
 
 	case uintptr:
@@ -31,11 +39,22 @@ func Hash[T constraint.BuiltinTypes](val T) uint64 {
 	case string:
 		hash.Write([]byte(v))
 
+	case *string:
+		binary.Write(buf, binary.LittleEndian, uint64(uintptr(unsafe.Pointer(v))))
+		hash.Write(buf.Bytes())
+
 	default:
 		binary.Write(buf, binary.LittleEndian, v)
 		hash.Write(buf.Bytes())
-
 	}
 
-	return hash.Sum64()
+	n := hash.Sum64()
+
+	if n == 0 {
+		fmt.Printf("fallback: %T:%v\n", val, val)
+		hash.Write([]byte(fmt.Sprintf("%T:%v", val, val)))
+		n = hash.Sum64()
+	}
+
+	return n
 }
