@@ -51,7 +51,6 @@ func Hash[T comparable](val T) uint64 {
 	n := hash.Sum64()
 
 	if n == 0 {
-		fmt.Printf("fallback: %T:%v\n", val, val)
 		hash.Write([]byte(fmt.Sprintf("%T:%v", val, val)))
 		n = hash.Sum64()
 	}
