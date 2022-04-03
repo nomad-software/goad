@@ -1,14 +1,12 @@
 package queue
 
-import "github.com/nomad-software/goad/constraint"
-
 // Queue is the main queue type.
-type Queue[T constraint.BuiltinTypes] struct {
+type Queue[T comparable] struct {
 	data []T
 }
 
 // New is used to create a new queue.
-func New[T constraint.BuiltinTypes]() Queue[T] {
+func New[T comparable]() Queue[T] {
 	return Queue[T]{}
 }
 
