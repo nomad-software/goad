@@ -125,6 +125,14 @@ func TestHashingStructs(t *testing.T) {
 	assert.Eq(t, Hash(Foo{Foo: "baz", Bar: "qux"}), 10275651914583187888)
 }
 
+func BenchmarkHashingStrings(b *testing.B) {
+	b.ReportAllocs()
+
+	for x := 0; x < b.N; x++ {
+		Hash("foo bar baz qux")
+	}
+}
+
 func BenchmarkHashingIntegers(b *testing.B) {
 	b.ReportAllocs()
 
@@ -133,10 +141,16 @@ func BenchmarkHashingIntegers(b *testing.B) {
 	}
 }
 
-func BenchmarkHashingStrings(b *testing.B) {
+func BenchmarkHashingStructs(b *testing.B) {
+	type Foo struct {
+		Foo string
+		Bar string
+	}
+
+	b.ResetTimer()
 	b.ReportAllocs()
 
 	for x := 0; x < b.N; x++ {
-		Hash("foo bar baz qux")
+		Hash(Foo{Foo: "foo", Bar: "bar"})
 	}
 }
