@@ -10,12 +10,28 @@ import (
 
 var isoTable = crc64.MakeTable(crc64.ISO)
 
+// Hasher is an interface primarily for structs to provide a hash of their
+// contents.
+type Hasher interface {
+	Hash() uint64
+}
+
+// HashBytes returns a 64bit unsigned integer hash of the passed byte slice.
+func HashBytes(b []byte) uint64 {
+	hash := crc64.New(isoTable)
+	hash.Write(b)
+	return hash.Sum64()
+}
+
 // Hash returns a 64bit unsigned integer hash for any value passed in.
 func Hash[T comparable](val T) uint64 {
 	hash := crc64.New(isoTable)
 	buf := new(bytes.Buffer)
 
 	switch v := any(val).(type) {
+	case Hasher:
+		return v.Hash()
+
 	case int:
 		binary.Write(buf, binary.LittleEndian, int64(v))
 		hash.Write(buf.Bytes())

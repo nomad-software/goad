@@ -1,6 +1,7 @@
 package hash
 
 import (
+	"bytes"
 	"testing"
 
 	"github.com/nomad-software/goad/assert"
@@ -112,17 +113,44 @@ func TestHashingArrays(t *testing.T) {
 	assert.True(t, Hash(a3) > 0)
 }
 
+type foo struct {
+	foo string
+	bar string
+}
+
 func TestHashingStructs(t *testing.T) {
 	t.Parallel()
 
-	type Foo struct {
-		Foo string
-		Bar string
-	}
+	assert.Eq(t, Hash(foo{}), 17410835185711984737)
+	assert.Eq(t, Hash(foo{foo: "foo", bar: "bar"}), 4221156121659267478)
+	assert.Eq(t, Hash(foo{foo: "baz", bar: "qux"}), 10275651913922585008)
+}
 
-	assert.Eq(t, Hash(Foo{}), 17410835185711973985)
-	assert.Eq(t, Hash(Foo{Foo: "foo", Bar: "bar"}), 4221156122319870358)
-	assert.Eq(t, Hash(Foo{Foo: "baz", Bar: "qux"}), 10275651914583187888)
+type baz struct {
+	baz string
+	qux string
+}
+
+func (h baz) Hash() uint64 {
+	buf := new(bytes.Buffer)
+	buf.Write([]byte(h.baz))
+	buf.Write([]byte(h.qux))
+	return HashBytes(buf.Bytes())
+}
+
+func TestHashingHashers(t *testing.T) {
+	t.Parallel()
+
+	assert.Eq(t, Hash(baz{}), 0)
+	assert.Eq(t, Hash(baz{baz: "foo", qux: "bar"}), 3297785893580976128)
+	assert.Eq(t, Hash(baz{baz: "baz", qux: "qux"}), 2538287465049288704)
+}
+
+func TestHashBytes(t *testing.T) {
+	t.Parallel()
+
+	assert.Eq(t, HashBytes([]byte{1, 2, 3, 4, 5}), 7532619113594617856)
+	assert.Eq(t, HashBytes([]byte{6, 7, 8, 9, 10}), 6995148483702292480)
 }
 
 func BenchmarkHashingStrings(b *testing.B) {
@@ -142,15 +170,17 @@ func BenchmarkHashingIntegers(b *testing.B) {
 }
 
 func BenchmarkHashingStructs(b *testing.B) {
-	type Foo struct {
-		Foo string
-		Bar string
-	}
-
-	b.ResetTimer()
 	b.ReportAllocs()
 
 	for x := 0; x < b.N; x++ {
-		Hash(Foo{Foo: "foo", Bar: "bar"})
+		Hash(foo{foo: "foo", bar: "bar"})
+	}
+}
+
+func BenchmarkHashingHashers(b *testing.B) {
+	b.ReportAllocs()
+
+	for x := 0; x < b.N; x++ {
+		Hash(baz{baz: "baz", qux: "qux"})
 	}
 }
