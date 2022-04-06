@@ -4,28 +4,26 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"hash/crc64"
+	"hash/fnv"
 	"unsafe"
 )
-
-var isoTable = crc64.MakeTable(crc64.ISO)
 
 // Hasher is an interface primarily for structs to provide a hash of their
 // contents.
 type Hasher interface {
-	Hash() uint64
+	Hash() uint32
 }
 
 // HashBytes returns a 64bit unsigned integer hash of the passed byte slice.
-func HashBytes(b []byte) uint64 {
-	hash := crc64.New(isoTable)
+func HashBytes(b []byte) uint32 {
+	hash := fnv.New32a()
 	hash.Write(b)
-	return hash.Sum64()
+	return hash.Sum32()
 }
 
 // Hash returns a 64bit unsigned integer hash for any value passed in.
-func Hash[T comparable](val T) uint64 {
-	hash := crc64.New(isoTable)
+func Hash[T comparable](val T) uint32 {
+	hash := fnv.New32a()
 	buf := new(bytes.Buffer)
 
 	switch v := any(val).(type) {
@@ -64,11 +62,11 @@ func Hash[T comparable](val T) uint64 {
 		hash.Write(buf.Bytes())
 	}
 
-	n := hash.Sum64()
+	n := hash.Sum32()
 
 	if n == 0 {
 		hash.Write([]byte(fmt.Sprintf("%T:%v", val, val)))
-		n = hash.Sum64()
+		n = hash.Sum32()
 	}
 
 	return n
