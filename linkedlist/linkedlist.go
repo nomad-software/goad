@@ -166,7 +166,7 @@ func (l *LinkedList[T]) Get(index int) T {
 }
 
 // Update updates a value at the specified index.
-func (l *LinkedList[T]) Update(val T, index int) {
+func (l *LinkedList[T]) Update(index int, val T) {
 	if index >= l.Count() {
 		panic("index outside of linked list bounds")
 	}
@@ -232,8 +232,10 @@ func (l *LinkedList[T]) Clear() {
 
 // ForEach iterates over the dataset within the linked list, calling the passed
 // function for each value.
-func (l *LinkedList[T]) ForEach(f func(val T)) {
+func (l *LinkedList[T]) ForEach(f func(i int, val T)) {
+	var index int
 	for ln := l.first; ln != nil; ln = ln.next {
-		f(ln.val)
+		f(index, ln.val)
+		index++
 	}
 }

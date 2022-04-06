@@ -276,7 +276,7 @@ func TestUpdate(t *testing.T) {
 	assert.Eq(t, l.Get(2), 3)
 	assert.Eq(t, l.Get(3), 4)
 
-	l.Update(5, 2)
+	l.Update(2, 5)
 
 	assert.Eq(t, l.Get(0), 1)
 	assert.Eq(t, l.Get(1), 2)
@@ -297,7 +297,7 @@ func TestFailedUpdate(t *testing.T) {
 	}()
 
 	q := New[string]()
-	q.Update("foo", 1)
+	q.Update(1, "foo")
 }
 
 func TestRemove(t *testing.T) {
@@ -414,20 +414,18 @@ func TestForEach(t *testing.T) {
 
 	l := New[int]()
 
+	l.InsertLast(0)
 	l.InsertLast(1)
 	l.InsertLast(2)
 	l.InsertLast(3)
 	l.InsertLast(4)
-	l.InsertLast(5)
 
-	i := 1
-	l.ForEach(func(val int) {
+	l.ForEach(func(i int, val int) {
 		assert.Eq(t, val, i)
-		i++
 	})
 
 	l.Clear()
-	l.ForEach(func(val int) {
+	l.ForEach(func(i int, val int) {
 		t.Errorf("linked list not cleared")
 	})
 }
