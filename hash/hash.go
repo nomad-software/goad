@@ -3,9 +3,7 @@ package hash
 import (
 	"bytes"
 	"encoding/binary"
-	"fmt"
 	"hash/fnv"
-	"unsafe"
 )
 
 // Hasher is an interface primarily for structs to provide a hash of their
@@ -30,44 +28,10 @@ func Hash[T comparable](val T) uint32 {
 	case Hasher:
 		return v.Hash()
 
-	case int:
-		binary.Write(buf, binary.LittleEndian, int64(v))
-		hash.Write(buf.Bytes())
-
-	case *int:
-		binary.Write(buf, binary.LittleEndian, uint64(uintptr(unsafe.Pointer(v))))
-		hash.Write(buf.Bytes())
-
-	case uint:
-		binary.Write(buf, binary.LittleEndian, uint64(v))
-		hash.Write(buf.Bytes())
-
-	case *uint:
-		binary.Write(buf, binary.LittleEndian, uint64(uintptr(unsafe.Pointer(v))))
-		hash.Write(buf.Bytes())
-
-	case uintptr:
-		binary.Write(buf, binary.LittleEndian, uint64(v))
-		hash.Write(buf.Bytes())
-
-	case string:
-		hash.Write([]byte(v))
-
-	case *string:
-		binary.Write(buf, binary.LittleEndian, uint64(uintptr(unsafe.Pointer(v))))
-		hash.Write(buf.Bytes())
-
 	default:
 		binary.Write(buf, binary.LittleEndian, v)
 		hash.Write(buf.Bytes())
 	}
 
-	n := hash.Sum32()
-
-	if n == 0 {
-		hash.Write([]byte(fmt.Sprintf("%T:%v", val, val)))
-		n = hash.Sum32()
-	}
-
-	return n
+	return hash.Sum32()
 }
