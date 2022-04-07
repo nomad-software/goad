@@ -153,6 +153,42 @@ func TestHashBytes(t *testing.T) {
 	assert.True(t, HashBytes([]byte{6, 7, 8, 9, 10}) > 0)
 }
 
+func BenchmarkHashingInt(b *testing.B) {
+	b.ReportAllocs()
+
+	for x := 0; x < b.N; x++ {
+		Hash(x)
+	}
+}
+
+func BenchmarkHashingIntPtr(b *testing.B) {
+	b.ReportAllocs()
+
+	for x := 0; x < b.N; x++ {
+		Hash(&x)
+	}
+}
+
+func BenchmarkHashingUint(b *testing.B) {
+	b.ReportAllocs()
+
+	var i uint
+	for x := 0; x < b.N; x++ {
+		Hash(i)
+		i++
+	}
+}
+
+func BenchmarkHashingUintPtr(b *testing.B) {
+	b.ReportAllocs()
+
+	var i uint
+	for x := 0; x < b.N; x++ {
+		Hash(&i)
+		i++
+	}
+}
+
 func BenchmarkHashingStrings(b *testing.B) {
 	b.ReportAllocs()
 
@@ -161,11 +197,12 @@ func BenchmarkHashingStrings(b *testing.B) {
 	}
 }
 
-func BenchmarkHashingIntegers(b *testing.B) {
+func BenchmarkHashingStringPtr(b *testing.B) {
 	b.ReportAllocs()
 
+	str := "foo bar baz qux"
 	for x := 0; x < b.N; x++ {
-		Hash(x)
+		Hash(&str)
 	}
 }
 

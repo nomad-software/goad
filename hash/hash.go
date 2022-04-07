@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"hash/fnv"
+	"unsafe"
 )
 
 // Hasher is an interface primarily for structs to provide a hash of their
@@ -27,6 +28,33 @@ func Hash[T comparable](val T) uint32 {
 	switch v := any(val).(type) {
 	case Hasher:
 		return v.Hash()
+
+	case int:
+		binary.Write(buf, binary.LittleEndian, int64(v))
+		hash.Write(buf.Bytes())
+
+	case *int:
+		binary.Write(buf, binary.LittleEndian, uint64(uintptr(unsafe.Pointer(v))))
+		hash.Write(buf.Bytes())
+
+	case uint:
+		binary.Write(buf, binary.LittleEndian, uint64(v))
+		hash.Write(buf.Bytes())
+
+	case *uint:
+		binary.Write(buf, binary.LittleEndian, uint64(uintptr(unsafe.Pointer(v))))
+		hash.Write(buf.Bytes())
+
+	case uintptr:
+		binary.Write(buf, binary.LittleEndian, uint64(v))
+		hash.Write(buf.Bytes())
+
+	case string:
+		hash.Write([]byte(v))
+
+	case *string:
+		binary.Write(buf, binary.LittleEndian, uint64(uintptr(unsafe.Pointer(v))))
+		hash.Write(buf.Bytes())
 
 	default:
 		binary.Write(buf, binary.LittleEndian, v)
