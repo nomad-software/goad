@@ -20,16 +20,16 @@ type payload[K comparable, V comparable] struct {
 
 // HashMap is the main map type.
 type HashMap[K comparable, V comparable] struct {
-	data     []linkedlist.LinkedList[payload[K, V]]
 	capacity int
+	data     []linkedlist.LinkedList[payload[K, V]]
 	count    int
 }
 
 // New is used to create a new map.
 func New[K comparable, V comparable]() HashMap[K, V] {
 	return HashMap[K, V]{
-		data:     make([]linkedlist.LinkedList[payload[K, V]], minBuckets),
 		capacity: minBuckets,
+		data:     make([]linkedlist.LinkedList[payload[K, V]], minBuckets),
 		count:    0,
 	}
 }
@@ -120,4 +120,83 @@ func (m *HashMap[K, V]) Remove(key K) {
 	if (m.capacity/2) >= minBuckets && m.count < int((float64(m.capacity)/2)*loadFactor) {
 		m.resize(m.capacity / 2)
 	}
+}
+
+// ContainsValue returns true if the passed value is present, false if not.
+func (m *HashMap[K, V]) ContainsValue(val V) bool {
+	var result bool
+	for _, ln := range m.data {
+		ln.ForEach(func(i int, p payload[K, V]) {
+			if p.val == val {
+				result = true
+				return
+			}
+		})
+	}
+	return result
+}
+
+// ContainsKey returns true if the passed key is present, false if not.
+func (m *HashMap[K, V]) ContainsKey(key K) bool {
+	var result bool
+	for _, ln := range m.data {
+		ln.ForEach(func(i int, p payload[K, V]) {
+			if p.key == key {
+				result = true
+				return
+			}
+		})
+	}
+	return result
+}
+
+// Clear empties the entire hashmap.
+func (m *HashMap[K, V]) Clear() {
+	m.capacity = minBuckets
+	m.data = make([]linkedlist.LinkedList[payload[K, V]], minBuckets)
+	m.count = 0
+}
+
+// ForEach iterates over the dataset within the hashmap, calling the passed
+// function for each value.
+func (m *HashMap[K, V]) ForEach(f func(key K, val V)) {
+	for _, ln := range m.data {
+		ln.ForEach(func(i int, p payload[K, V]) {
+			f(p.key, p.val)
+		})
+	}
+}
+
+// Keys returns the keys delivered through a channel. This is safe to be
+// called in a for/range loop as it only creates one channel.
+func (m *HashMap[K, V]) Keys() chan K {
+	c := make(chan K)
+
+	go func() {
+		for _, ln := range m.data {
+			ln.ForEach(func(i int, p payload[K, V]) {
+				c <- p.key
+			})
+		}
+		close(c)
+	}()
+
+	return c
+}
+
+// Values returns the values delivered through a channel. This is safe to be
+// called in a for/range loop as it only creates one channel.
+func (m *HashMap[K, V]) Values() chan V {
+	c := make(chan V)
+
+	go func() {
+		for _, ln := range m.data {
+			ln.ForEach(func(i int, p payload[K, V]) {
+				c <- p.val
+			})
+		}
+		close(c)
+	}()
+
+	return c
 }
