@@ -234,8 +234,24 @@ func (l *LinkedList[T]) Clear() {
 // function for each value.
 func (l *LinkedList[T]) ForEach(f func(i int, val T)) {
 	var index int
+
 	for ln := l.first; ln != nil; ln = ln.next {
 		f(index, ln.val)
 		index++
 	}
+}
+
+// Values returns the values delivered through a channel. This is safe to be
+// called in a for/range loop as it only creates one channel.
+func (l *LinkedList[T]) Values() chan T {
+	c := make(chan T)
+
+	go func() {
+		for ln := l.first; ln != nil; ln = ln.next {
+			c <- ln.val
+		}
+		close(c)
+	}()
+
+	return c
 }
