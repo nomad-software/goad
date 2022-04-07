@@ -116,7 +116,7 @@ func TestLargeCapacity(t *testing.T) {
 	assert.Eq(t, q.Count(), 0)
 }
 
-func TestFailedPop(t *testing.T) {
+func TestFailedDequeue(t *testing.T) {
 	t.Parallel()
 
 	defer func() {
@@ -180,6 +180,29 @@ func TestForEach(t *testing.T) {
 	q.ForEach(func(val int) {
 		t.Errorf("queue not cleared")
 	})
+}
+
+func TestValues(t *testing.T) {
+	t.Parallel()
+
+	q := New[int]()
+
+	q.Enqueue(1)
+	q.Enqueue(2)
+	q.Enqueue(3)
+	q.Enqueue(4)
+	q.Enqueue(5)
+
+	i := 1
+	for val := range q.Values() {
+		assert.Eq(t, val, i)
+		i++
+	}
+
+	q.Clear()
+	for range q.Values() {
+		t.Errorf("queue not cleared")
+	}
 }
 
 func BenchmarkQueue(b *testing.B) {

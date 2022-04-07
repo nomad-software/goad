@@ -62,3 +62,18 @@ func (q *Queue[T]) ForEach(f func(val T)) {
 		f(v)
 	}
 }
+
+// Values returns the values delivered through a channel. This is safe to be
+// called in a for/range loop as it only creates one channel.
+func (q *Queue[T]) Values() chan T {
+	c := make(chan T)
+
+	go func() {
+		for _, v := range q.data {
+			c <- v
+		}
+		close(c)
+	}()
+
+	return c
+}
