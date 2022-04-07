@@ -11,12 +11,12 @@ func New[T comparable]() Queue[T] {
 }
 
 // Count returns the amount of entries in the queue.
-func (q *Queue[T]) Count() int {
+func (q Queue[T]) Count() int {
 	return len(q.data)
 }
 
 // Empty returns true if the queue is empty, false if not.
-func (q *Queue[T]) Empty() bool {
+func (q Queue[T]) Empty() bool {
 	return q.Count() == 0
 }
 
@@ -26,7 +26,7 @@ func (q *Queue[T]) Enqueue(val T) {
 }
 
 // Peek returns the first value.
-func (q *Queue[T]) Peek() T {
+func (q Queue[T]) Peek() T {
 	return q.data[0]
 }
 
@@ -41,7 +41,7 @@ func (q *Queue[T]) Dequeue() T {
 }
 
 // Contains returns true if the value exists in the queue, false if not.
-func (q *Queue[T]) Contains(val T) bool {
+func (q Queue[T]) Contains(val T) bool {
 	for _, v := range q.data {
 		if v == val {
 			return true
@@ -57,7 +57,7 @@ func (q *Queue[T]) Clear() {
 
 // ForEach iterates over the dataset within the queue, calling the passed
 // function for each value.
-func (q *Queue[T]) ForEach(f func(val T)) {
+func (q Queue[T]) ForEach(f func(val T)) {
 	for _, v := range q.data {
 		f(v)
 	}
@@ -65,7 +65,7 @@ func (q *Queue[T]) ForEach(f func(val T)) {
 
 // Values returns the values delivered through a channel. This is safe to be
 // called in a for/range loop as it only creates one channel.
-func (q *Queue[T]) Values() chan T {
+func (q Queue[T]) Values() chan T {
 	c := make(chan T)
 
 	go func() {

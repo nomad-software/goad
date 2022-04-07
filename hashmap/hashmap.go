@@ -89,7 +89,7 @@ func (m *HashMap[K, V]) Put(key K, val V) {
 }
 
 // Get gets a value from the hash map relating to the passed key.
-func (m *HashMap[K, V]) Get(key K) (val V, ok bool) {
+func (m HashMap[K, V]) Get(key K) (val V, ok bool) {
 	hash := hash.Hash(key)
 	bucket := int(math.Mod(float64(hash), float64(m.capacity)))
 
@@ -123,7 +123,7 @@ func (m *HashMap[K, V]) Remove(key K) {
 }
 
 // ContainsValue returns true if the passed value is present, false if not.
-func (m *HashMap[K, V]) ContainsValue(val V) bool {
+func (m HashMap[K, V]) ContainsValue(val V) bool {
 	var result bool
 	for _, ln := range m.data {
 		ln.ForEach(func(i int, p payload[K, V]) {
@@ -137,7 +137,7 @@ func (m *HashMap[K, V]) ContainsValue(val V) bool {
 }
 
 // ContainsKey returns true if the passed key is present, false if not.
-func (m *HashMap[K, V]) ContainsKey(key K) bool {
+func (m HashMap[K, V]) ContainsKey(key K) bool {
 	var result bool
 	for _, ln := range m.data {
 		ln.ForEach(func(i int, p payload[K, V]) {
@@ -159,7 +159,7 @@ func (m *HashMap[K, V]) Clear() {
 
 // ForEach iterates over the dataset within the hashmap, calling the passed
 // function for each value.
-func (m *HashMap[K, V]) ForEach(f func(key K, val V)) {
+func (m HashMap[K, V]) ForEach(f func(key K, val V)) {
 	for _, ln := range m.data {
 		ln.ForEach(func(i int, p payload[K, V]) {
 			f(p.key, p.val)
@@ -169,7 +169,7 @@ func (m *HashMap[K, V]) ForEach(f func(key K, val V)) {
 
 // Keys returns the keys delivered through a channel. This is safe to be
 // called in a for/range loop as it only creates one channel.
-func (m *HashMap[K, V]) Keys() chan K {
+func (m HashMap[K, V]) Keys() chan K {
 	c := make(chan K)
 
 	go func() {
@@ -186,7 +186,7 @@ func (m *HashMap[K, V]) Keys() chan K {
 
 // Values returns the values delivered through a channel. This is safe to be
 // called in a for/range loop as it only creates one channel.
-func (m *HashMap[K, V]) Values() chan V {
+func (m HashMap[K, V]) Values() chan V {
 	c := make(chan V)
 
 	go func() {

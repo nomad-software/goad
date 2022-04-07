@@ -11,12 +11,12 @@ func New[T comparable]() Stack[T] {
 }
 
 // Count returns the amount of entries in the stack.
-func (s *Stack[T]) Count() int {
+func (s Stack[T]) Count() int {
 	return len(s.data)
 }
 
 // Empty returns true if the stack is empty, false if not.
-func (s *Stack[T]) Empty() bool {
+func (s Stack[T]) Empty() bool {
 	return s.Count() == 0
 }
 
@@ -26,7 +26,7 @@ func (s *Stack[T]) Push(val T) {
 }
 
 // Peek returns the first value.
-func (s *Stack[T]) Peek() T {
+func (s Stack[T]) Peek() T {
 	return s.data[s.Count()-1]
 }
 
@@ -42,7 +42,7 @@ func (s *Stack[T]) Pop() T {
 }
 
 // Contains returns true if the value exists in the stack, false if not.
-func (s *Stack[T]) Contains(val T) bool {
+func (s Stack[T]) Contains(val T) bool {
 	for _, v := range s.data {
 		if v == val {
 			return true
@@ -58,7 +58,7 @@ func (s *Stack[T]) Clear() {
 
 // ForEach iterates over the dataset within the stack, calling the passed
 // function for each value.
-func (s *Stack[T]) ForEach(f func(val T)) {
+func (s Stack[T]) ForEach(f func(val T)) {
 	for i := len(s.data) - 1; i >= 0; i-- {
 		f(s.data[i])
 	}
@@ -66,7 +66,7 @@ func (s *Stack[T]) ForEach(f func(val T)) {
 
 // Values returns the values delivered through a channel. This is safe to be
 // called in a for/range loop as it only creates one channel.
-func (s *Stack[T]) Values() chan T {
+func (s Stack[T]) Values() chan T {
 	c := make(chan T)
 
 	go func() {

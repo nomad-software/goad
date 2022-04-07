@@ -20,12 +20,12 @@ func New[T comparable]() LinkedList[T] {
 }
 
 // Count returns the amount of entries in the linked list.
-func (l *LinkedList[T]) Count() int {
+func (l LinkedList[T]) Count() int {
 	return l.count
 }
 
 // Empty returns true if the linked list is empty, false if not.
-func (l *LinkedList[T]) Empty() bool {
+func (l LinkedList[T]) Empty() bool {
 	return l.Count() == 0
 }
 
@@ -46,7 +46,7 @@ func (l *LinkedList[T]) InsertFirst(val T) {
 }
 
 // First returns the value at the beginning of the linked list.
-func (l *LinkedList[T]) First() T {
+func (l LinkedList[T]) First() T {
 	if l.first == nil {
 		panic("linked list empty, getting first failed")
 	}
@@ -86,7 +86,7 @@ func (l *LinkedList[T]) InsertLast(val T) {
 }
 
 // Last returns the value at the end of the linked list.
-func (l *LinkedList[T]) Last() T {
+func (l LinkedList[T]) Last() T {
 	if l.last == nil {
 		panic("linked list empty, getting last failed")
 	}
@@ -141,7 +141,7 @@ func (l *LinkedList[T]) Insert(val T, index int) {
 }
 
 // Get gets a value at the specified index.
-func (l *LinkedList[T]) Get(index int) T {
+func (l LinkedList[T]) Get(index int) T {
 	if index >= l.Count() {
 		panic("index outside of linked list bounds")
 	}
@@ -213,7 +213,7 @@ func (l *LinkedList[T]) Remove(index int) {
 }
 
 // Contains returns true if the value exists in the linked list, false if not.
-func (l *LinkedList[T]) Contains(val T) bool {
+func (l LinkedList[T]) Contains(val T) bool {
 	for ln := l.first; ln != nil; ln = ln.next {
 		if ln.val == val {
 			return true
@@ -232,7 +232,7 @@ func (l *LinkedList[T]) Clear() {
 
 // ForEach iterates over the dataset within the linked list, calling the passed
 // function for each value.
-func (l *LinkedList[T]) ForEach(f func(i int, val T)) {
+func (l LinkedList[T]) ForEach(f func(i int, val T)) {
 	var index int
 
 	for ln := l.first; ln != nil; ln = ln.next {
@@ -243,7 +243,7 @@ func (l *LinkedList[T]) ForEach(f func(i int, val T)) {
 
 // Values returns the values delivered through a channel. This is safe to be
 // called in a for/range loop as it only creates one channel.
-func (l *LinkedList[T]) Values() chan T {
+func (l LinkedList[T]) Values() chan T {
 	c := make(chan T)
 
 	go func() {
