@@ -13,14 +13,14 @@ type Hasher interface {
 	Hash() uint32
 }
 
-// HashBytes returns a 64bit unsigned integer hash of the passed byte slice.
+// HashBytes returns a 32bit unsigned integer hash of the passed byte slice.
 func HashBytes(b []byte) uint32 {
 	hash := fnv.New32a()
 	hash.Write(b)
 	return hash.Sum32()
 }
 
-// Hash returns a 64bit unsigned integer hash for any value passed in.
+// Hash returns a 32bit unsigned integer hash for any value passed in.
 func Hash[T comparable](val T) uint32 {
 	hash := fnv.New32a()
 	buf := new(bytes.Buffer)
