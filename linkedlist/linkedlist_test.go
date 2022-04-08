@@ -12,7 +12,7 @@ func TestNew(t *testing.T) {
 	l := New[int]()
 
 	assert.Eq(t, l.Count(), 0)
-	assert.Eq(t, l.Empty(), true)
+	assert.True(t, l.Empty())
 }
 
 func TestChannel(t *testing.T) {
@@ -26,15 +26,15 @@ func TestChannel(t *testing.T) {
 	s.InsertLast(c1)
 	s.InsertLast(c2)
 
-	assert.Eq(t, s.Empty(), false)
+	assert.False(t, s.Empty())
 	assert.Eq(t, s.Count(), 2)
-	assert.Eq(t, s.Contains(c1), true)
-	assert.Eq(t, s.Contains(c2), true)
+	assert.True(t, s.Contains(c1))
+	assert.True(t, s.Contains(c2))
 	assert.Eq(t, s.Last(), c2)
 	s.RemoveLast()
 	assert.Eq(t, s.Last(), c1)
 	s.RemoveLast()
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 }
 
 func TestArray(t *testing.T) {
@@ -48,15 +48,15 @@ func TestArray(t *testing.T) {
 	s.InsertLast(a1)
 	s.InsertLast(a2)
 
-	assert.Eq(t, s.Empty(), false)
+	assert.False(t, s.Empty())
 	assert.Eq(t, s.Count(), 2)
-	assert.Eq(t, s.Contains(a1), true)
-	assert.Eq(t, s.Contains(a2), true)
+	assert.True(t, s.Contains(a1))
+	assert.True(t, s.Contains(a2))
 	assert.Eq(t, s.Last(), a2)
 	s.RemoveLast()
 	assert.Eq(t, s.Last(), a1)
 	s.RemoveLast()
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 }
 
 func TestStruct(t *testing.T) {
@@ -75,15 +75,15 @@ func TestStruct(t *testing.T) {
 	s.InsertLast(f1)
 	s.InsertLast(f2)
 
-	assert.Eq(t, s.Empty(), false)
+	assert.False(t, s.Empty())
 	assert.Eq(t, s.Count(), 2)
-	assert.Eq(t, s.Contains(f1), true)
-	assert.Eq(t, s.Contains(f2), true)
+	assert.True(t, s.Contains(f1))
+	assert.True(t, s.Contains(f2))
 	assert.Eq(t, s.Last(), f2)
 	s.RemoveLast()
 	assert.Eq(t, s.Last(), f1)
 	s.RemoveLast()
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 }
 
 func TestLargeCapacity(t *testing.T) {
@@ -99,9 +99,9 @@ func TestLargeCapacity(t *testing.T) {
 	}
 
 	assert.Eq(t, s.Count(), int(limit))
-	assert.Eq(t, s.Contains(1), true)
-	assert.Eq(t, s.Contains(limit), true)
-	assert.Eq(t, s.Empty(), false)
+	assert.True(t, s.Contains(1))
+	assert.True(t, s.Contains(limit))
+	assert.False(t, s.Empty())
 
 	for i := limit; i >= 1; i-- {
 		assert.Eq(t, s.Count(), int(i))
@@ -109,7 +109,7 @@ func TestLargeCapacity(t *testing.T) {
 		s.RemoveLast()
 	}
 
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 	assert.Eq(t, s.Count(), 0)
 }
 
@@ -131,7 +131,7 @@ func TestInsertFirst(t *testing.T) {
 	assert.Eq(t, l.Last(), 1)
 
 	assert.Eq(t, l.Count(), 3)
-	assert.Eq(t, l.Empty(), false)
+	assert.False(t, l.Empty())
 
 	l.RemoveFirst()
 	assert.Eq(t, l.First(), 2)
@@ -143,7 +143,7 @@ func TestInsertFirst(t *testing.T) {
 
 	l.RemoveFirst()
 	assert.Eq(t, l.Count(), 0)
-	assert.Eq(t, l.Empty(), true)
+	assert.True(t, l.Empty())
 }
 
 func TestFailedFirst(t *testing.T) {
@@ -177,7 +177,7 @@ func TestInsertLast(t *testing.T) {
 	assert.Eq(t, l.Last(), 3)
 
 	assert.Eq(t, l.Count(), 3)
-	assert.Eq(t, l.Empty(), false)
+	assert.False(t, l.Empty())
 
 	l.RemoveLast()
 	assert.Eq(t, l.First(), 1)
@@ -189,7 +189,7 @@ func TestInsertLast(t *testing.T) {
 
 	l.RemoveLast()
 	assert.Eq(t, l.Count(), 0)
-	assert.Eq(t, l.Empty(), true)
+	assert.True(t, l.Empty())
 }
 
 func TestFailedLast(t *testing.T) {
@@ -232,7 +232,7 @@ func TestInsert(t *testing.T) {
 	assert.Eq(t, l.Get(3), 2)
 
 	assert.Eq(t, l.Count(), 4)
-	assert.Eq(t, l.Empty(), false)
+	assert.False(t, l.Empty())
 }
 
 func TestFailedInsert(t *testing.T) {
@@ -284,7 +284,7 @@ func TestUpdate(t *testing.T) {
 	assert.Eq(t, l.Get(3), 4)
 
 	assert.Eq(t, l.Count(), 4)
-	assert.Eq(t, l.Empty(), false)
+	assert.False(t, l.Empty())
 }
 
 func TestFailedUpdate(t *testing.T) {
@@ -318,7 +318,7 @@ func TestRemove(t *testing.T) {
 	assert.Eq(t, l.Get(4), 5)
 
 	assert.Eq(t, l.Count(), 5)
-	assert.Eq(t, l.Empty(), false)
+	assert.False(t, l.Empty())
 
 	l.Remove(4)
 	assert.Eq(t, l.Get(0), 1)
@@ -327,7 +327,7 @@ func TestRemove(t *testing.T) {
 	assert.Eq(t, l.Get(3), 4)
 
 	assert.Eq(t, l.Count(), 4)
-	assert.Eq(t, l.Empty(), false)
+	assert.False(t, l.Empty())
 
 	l.Remove(0)
 	assert.Eq(t, l.Get(0), 2)
@@ -335,14 +335,14 @@ func TestRemove(t *testing.T) {
 	assert.Eq(t, l.Get(2), 4)
 
 	assert.Eq(t, l.Count(), 3)
-	assert.Eq(t, l.Empty(), false)
+	assert.False(t, l.Empty())
 
 	l.Remove(1)
 	assert.Eq(t, l.Get(0), 2)
 	assert.Eq(t, l.Get(1), 4)
 
 	assert.Eq(t, l.Count(), 2)
-	assert.Eq(t, l.Empty(), false)
+	assert.False(t, l.Empty())
 }
 
 func TestFailedRemoveOnEmptyList(t *testing.T) {
@@ -381,11 +381,11 @@ func TestContains(t *testing.T) {
 	l.InsertLast(2)
 	l.InsertLast(3)
 
-	assert.Eq(t, l.Contains(0), false)
-	assert.Eq(t, l.Contains(1), true)
-	assert.Eq(t, l.Contains(2), true)
-	assert.Eq(t, l.Contains(3), true)
-	assert.Eq(t, l.Contains(4), false)
+	assert.False(t, l.Contains(0))
+	assert.True(t, l.Contains(1))
+	assert.True(t, l.Contains(2))
+	assert.True(t, l.Contains(3))
+	assert.False(t, l.Contains(4))
 }
 
 func TestClear(t *testing.T) {
@@ -399,14 +399,14 @@ func TestClear(t *testing.T) {
 
 	l.Clear()
 	assert.Eq(t, l.Count(), 0)
-	assert.Eq(t, l.Empty(), true)
+	assert.True(t, l.Empty())
 
 	l.InsertLast(4)
 	l.InsertLast(5)
 	l.InsertLast(6)
 
 	assert.Eq(t, l.Count(), 3)
-	assert.Eq(t, l.Empty(), false)
+	assert.False(t, l.Empty())
 }
 
 func TestForEach(t *testing.T) {

@@ -14,13 +14,13 @@ func TestNew(t *testing.T) {
 	q.Enqueue(2)
 	q.Enqueue(3)
 
-	assert.Eq(t, q.Empty(), false)
+	assert.False(t, q.Empty())
 	assert.Eq(t, q.Count(), 3)
 	assert.Eq(t, q.Dequeue(), 1)
 	assert.Eq(t, q.Peek(), 2)
 	assert.Eq(t, q.Dequeue(), 2)
 	assert.Eq(t, q.Dequeue(), 3)
-	assert.Eq(t, q.Empty(), true)
+	assert.True(t, q.Empty())
 }
 
 func TestChannel(t *testing.T) {
@@ -34,13 +34,13 @@ func TestChannel(t *testing.T) {
 	s.Enqueue(c1)
 	s.Enqueue(c2)
 
-	assert.Eq(t, s.Empty(), false)
+	assert.False(t, s.Empty())
 	assert.Eq(t, s.Count(), 2)
-	assert.Eq(t, s.Contains(c1), true)
-	assert.Eq(t, s.Contains(c2), true)
+	assert.True(t, s.Contains(c1))
+	assert.True(t, s.Contains(c2))
 	assert.Eq(t, s.Dequeue(), c1)
 	assert.Eq(t, s.Dequeue(), c2)
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 }
 
 func TestArray(t *testing.T) {
@@ -54,13 +54,13 @@ func TestArray(t *testing.T) {
 	s.Enqueue(a1)
 	s.Enqueue(a2)
 
-	assert.Eq(t, s.Empty(), false)
+	assert.False(t, s.Empty())
 	assert.Eq(t, s.Count(), 2)
-	assert.Eq(t, s.Contains(a1), true)
-	assert.Eq(t, s.Contains(a2), true)
+	assert.True(t, s.Contains(a1))
+	assert.True(t, s.Contains(a2))
 	assert.Eq(t, s.Dequeue(), a1)
 	assert.Eq(t, s.Dequeue(), a2)
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 }
 
 func TestStruct(t *testing.T) {
@@ -79,13 +79,13 @@ func TestStruct(t *testing.T) {
 	s.Enqueue(f1)
 	s.Enqueue(f2)
 
-	assert.Eq(t, s.Empty(), false)
+	assert.False(t, s.Empty())
 	assert.Eq(t, s.Count(), 2)
-	assert.Eq(t, s.Contains(f1), true)
-	assert.Eq(t, s.Contains(f2), true)
+	assert.True(t, s.Contains(f1))
+	assert.True(t, s.Contains(f2))
 	assert.Eq(t, s.Dequeue(), f1)
 	assert.Eq(t, s.Dequeue(), f2)
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 }
 
 func TestLargeCapacity(t *testing.T) {
@@ -102,9 +102,9 @@ func TestLargeCapacity(t *testing.T) {
 
 	assert.Eq(t, q.Peek(), 1)
 	assert.Eq(t, q.Count(), limit)
-	assert.Eq(t, q.Contains(1), true)
-	assert.Eq(t, q.Contains(limit), true)
-	assert.Eq(t, q.Empty(), false)
+	assert.True(t, q.Contains(1))
+	assert.True(t, q.Contains(limit))
+	assert.False(t, q.Empty())
 
 	for i := 1; i <= limit; i++ {
 		assert.Eq(t, q.Peek(), i)
@@ -112,7 +112,7 @@ func TestLargeCapacity(t *testing.T) {
 		assert.Eq(t, q.Count(), limit-i)
 	}
 
-	assert.Eq(t, q.Empty(), true)
+	assert.True(t, q.Empty())
 	assert.Eq(t, q.Count(), 0)
 }
 
@@ -138,8 +138,8 @@ func TestContains(t *testing.T) {
 	q.Enqueue("baz")
 	q.Enqueue("qux")
 
-	assert.Eq(t, q.Contains("bar"), true)
-	assert.Eq(t, q.Contains("fuz"), false)
+	assert.True(t, q.Contains("bar"))
+	assert.False(t, q.Contains("fuz"))
 }
 
 func TestClearing(t *testing.T) {

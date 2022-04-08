@@ -14,13 +14,13 @@ func TestNew(t *testing.T) {
 	s.Push(2)
 	s.Push(3)
 
-	assert.Eq(t, s.Empty(), false)
+	assert.False(t, s.Empty())
 	assert.Eq(t, s.Count(), 3)
 	assert.Eq(t, s.Pop(), 3)
 	assert.Eq(t, s.Peek(), 2)
 	assert.Eq(t, s.Pop(), 2)
 	assert.Eq(t, s.Pop(), 1)
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 }
 
 func TestChannel(t *testing.T) {
@@ -34,13 +34,13 @@ func TestChannel(t *testing.T) {
 	s.Push(c1)
 	s.Push(c2)
 
-	assert.Eq(t, s.Empty(), false)
+	assert.False(t, s.Empty())
 	assert.Eq(t, s.Count(), 2)
-	assert.Eq(t, s.Contains(c1), true)
-	assert.Eq(t, s.Contains(c2), true)
+	assert.True(t, s.Contains(c1))
+	assert.True(t, s.Contains(c2))
 	assert.Eq(t, s.Pop(), c2)
 	assert.Eq(t, s.Pop(), c1)
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 }
 
 func TestArray(t *testing.T) {
@@ -54,13 +54,13 @@ func TestArray(t *testing.T) {
 	s.Push(a1)
 	s.Push(a2)
 
-	assert.Eq(t, s.Empty(), false)
+	assert.False(t, s.Empty())
 	assert.Eq(t, s.Count(), 2)
-	assert.Eq(t, s.Contains(a1), true)
-	assert.Eq(t, s.Contains(a2), true)
+	assert.True(t, s.Contains(a1))
+	assert.True(t, s.Contains(a2))
 	assert.Eq(t, s.Pop(), a2)
 	assert.Eq(t, s.Pop(), a1)
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 }
 
 func TestStruct(t *testing.T) {
@@ -79,13 +79,13 @@ func TestStruct(t *testing.T) {
 	s.Push(f1)
 	s.Push(f2)
 
-	assert.Eq(t, s.Empty(), false)
+	assert.False(t, s.Empty())
 	assert.Eq(t, s.Count(), 2)
-	assert.Eq(t, s.Contains(f1), true)
-	assert.Eq(t, s.Contains(f2), true)
+	assert.True(t, s.Contains(f1))
+	assert.True(t, s.Contains(f2))
 	assert.Eq(t, s.Pop(), f2)
 	assert.Eq(t, s.Pop(), f1)
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 }
 
 func TestLargeCapacity(t *testing.T) {
@@ -102,9 +102,9 @@ func TestLargeCapacity(t *testing.T) {
 
 	assert.Eq(t, s.Peek(), limit)
 	assert.Eq(t, s.Count(), limit)
-	assert.Eq(t, s.Contains(1), true)
-	assert.Eq(t, s.Contains(limit), true)
-	assert.Eq(t, s.Empty(), false)
+	assert.True(t, s.Contains(1))
+	assert.True(t, s.Contains(limit))
+	assert.False(t, s.Empty())
 
 	for i := limit; i >= 1; i-- {
 		assert.Eq(t, s.Count(), i)
@@ -112,7 +112,7 @@ func TestLargeCapacity(t *testing.T) {
 		assert.Eq(t, s.Pop(), i)
 	}
 
-	assert.Eq(t, s.Empty(), true)
+	assert.True(t, s.Empty())
 	assert.Eq(t, s.Count(), 0)
 }
 
@@ -138,8 +138,8 @@ func TestContains(t *testing.T) {
 	s.Push("baz")
 	s.Push("qux")
 
-	assert.Eq(t, s.Contains("bar"), true)
-	assert.Eq(t, s.Contains("fuz"), false)
+	assert.True(t, s.Contains("bar"))
+	assert.False(t, s.Contains("fuz"))
 }
 
 func TestClearing(t *testing.T) {

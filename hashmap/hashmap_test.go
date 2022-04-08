@@ -10,25 +10,25 @@ func TestNew(t *testing.T) {
 	t.Parallel()
 
 	m := New[string, int]()
-	assert.Eq(t, m.Empty(), true)
+	assert.True(t, m.Empty())
 
 	m.Put("foo", 3)
 	val, ok := m.Get("foo")
 	assert.Eq(t, val, 3)
-	assert.Eq(t, ok, true)
+	assert.True(t, ok)
 
 	m.Put("foo", 6)
 	val, ok = m.Get("foo")
 	assert.Eq(t, val, 6)
-	assert.Eq(t, ok, true)
+	assert.True(t, ok)
 
 	assert.Eq(t, m.Count(), 1)
-	assert.Eq(t, m.Empty(), false)
+	assert.False(t, m.Empty())
 
 	m.Remove("foo")
 	val, ok = m.Get("foo")
 	assert.Eq(t, val, 0)
-	assert.Eq(t, ok, false)
+	assert.False(t, ok)
 
 	m.Remove("foo")
 	m.Remove("foo")
@@ -55,7 +55,7 @@ func TestResizing(t *testing.T) {
 	m.Put("k", 11)
 	assert.Eq(t, m.Count(), 11)
 	assert.Eq(t, m.capacity, 16)
-	assert.Eq(t, m.Empty(), false)
+	assert.False(t, m.Empty())
 
 	m.Put("l", 12)
 	assert.Eq(t, m.Count(), 12)
@@ -90,7 +90,7 @@ func TestContains(t *testing.T) {
 	m.Put("c", 3)
 	m.Put("d", 4)
 	m.Put("e", 5)
-	assert.Eq(t, m.Empty(), false)
+	assert.False(t, m.Empty())
 
 	assert.True(t, m.ContainsKey("a"))
 	assert.False(t, m.ContainsKey("f"))
