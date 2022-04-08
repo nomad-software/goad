@@ -12,13 +12,13 @@ const (
 	loadFactor = 0.75
 )
 
-// Payload is the main payload of the map.
+// Payload is the main payload of the hash map.
 type payload[K comparable, V comparable] struct {
 	key K
 	val V
 }
 
-// HashMap is the main map type.
+// HashMap is the main hash map type.
 type HashMap[K comparable, V comparable] struct {
 	capacity int
 	data     []linkedlist.LinkedList[payload[K, V]]
@@ -150,14 +150,14 @@ func (m HashMap[K, V]) ContainsKey(key K) bool {
 	return result
 }
 
-// Clear empties the entire hashmap.
+// Clear empties the entire hash map.
 func (m *HashMap[K, V]) Clear() {
 	m.capacity = minBuckets
 	m.data = make([]linkedlist.LinkedList[payload[K, V]], minBuckets)
 	m.count = 0
 }
 
-// ForEach iterates over the dataset within the hashmap, calling the passed
+// ForEach iterates over the dataset within the hash map, calling the passed
 // function for each value.
 func (m HashMap[K, V]) ForEach(f func(key K, val V)) {
 	for _, ln := range m.data {
