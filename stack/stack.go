@@ -7,7 +7,9 @@ type Stack[T comparable] struct {
 
 // New is used to create a new stack.
 func New[T comparable]() Stack[T] {
-	return Stack[T]{}
+	return Stack[T]{
+		data: make([]T, 0, 16),
+	}
 }
 
 // Count returns the amount of entries in the stack.

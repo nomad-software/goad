@@ -7,7 +7,9 @@ type Queue[T comparable] struct {
 
 // New is used to create a new queue.
 func New[T comparable]() Queue[T] {
-	return Queue[T]{}
+	return Queue[T]{
+		data: make([]T, 0, 16),
+	}
 }
 
 // Count returns the amount of entries in the queue.
