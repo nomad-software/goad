@@ -202,3 +202,14 @@ func TestValues(t *testing.T) {
 		t.Errorf("queue not cleared")
 	}
 }
+
+func BenchmarkBinaryHeap(b *testing.B) {
+	h := New(func(a, b int) bool { return a < b })
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for x := 0; x < b.N; x++ {
+		h.Insert(x)
+	}
+}
