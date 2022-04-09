@@ -79,6 +79,33 @@ func TestFailedResize(t *testing.T) {
 	m.resize(2)
 }
 
+func TestLargeCapacity(t *testing.T) {
+	t.Parallel()
+
+	m := New[int, int]()
+	limit := 1_000_000
+
+	for i := 1; i <= limit; i++ {
+		m.Put(i, i)
+		assert.Eq(t, m.Count(), i)
+	}
+
+	assert.Eq(t, m.Count(), limit)
+	assert.True(t, m.ContainsKey(1))
+	assert.True(t, m.ContainsValue(1))
+	assert.True(t, m.ContainsKey(limit))
+	assert.True(t, m.ContainsValue(limit))
+	assert.False(t, m.Empty())
+
+	for i := 1; i <= limit; i++ {
+		m.Remove(i)
+		assert.Eq(t, m.Count(), limit-i)
+	}
+
+	assert.True(t, m.Empty())
+	assert.Eq(t, m.Count(), 0)
+}
+
 func TestContains(t *testing.T) {
 	t.Parallel()
 
