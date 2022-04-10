@@ -6,4 +6,4 @@
 
 ## Documentation
 
-https://pkg.go.dev/github.com/nomad-software/goad@master
+https://pkg.go.dev/github.com/nomad-software/goad
