@@ -176,33 +176,6 @@ func TestForEach(t *testing.T) {
 	})
 }
 
-func TestValues(t *testing.T) {
-	t.Parallel()
-
-	b := New(func(a, b int) bool { return a < b })
-	b.Insert(6)
-	b.Insert(5)
-	b.Insert(2)
-	b.Insert(9)
-	b.Insert(4)
-	b.Insert(8)
-	b.Insert(7)
-	b.Insert(1)
-	b.Insert(3)
-	b.Insert(10)
-
-	i := 1
-	for val := range b.Values() {
-		assert.Eq(t, val, i)
-		i++
-	}
-
-	b.Clear()
-	for range b.Values() {
-		t.Errorf("queue not cleared")
-	}
-}
-
 func BenchmarkBinaryHeap(b *testing.B) {
 	h := New(func(a, b int) bool { return a < b })
 
@@ -211,5 +184,21 @@ func BenchmarkBinaryHeap(b *testing.B) {
 
 	for x := 0; x < b.N; x++ {
 		h.Insert(x)
+	}
+}
+
+func BenchmarkForEach(b *testing.B) {
+	h := New(func(a, b int) bool { return a < b })
+
+	for x := 0; x < 1_000_000; x++ {
+		h.Insert(x)
+	}
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for x := 0; x < b.N; x++ {
+		h.ForEach(func(val int) {
+		})
 	}
 }

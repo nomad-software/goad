@@ -65,18 +65,3 @@ func (s Stack[T]) ForEach(f func(val T)) {
 		f(s.data[i])
 	}
 }
-
-// Values returns the values delivered through a channel. This is safe to be
-// called in a for/range loop as it only creates one channel.
-func (s Stack[T]) Values() chan T {
-	c := make(chan T)
-
-	go func() {
-		for i := len(s.data) - 1; i >= 0; i-- {
-			c <- s.data[i]
-		}
-		close(c)
-	}()
-
-	return c
-}

@@ -178,28 +178,6 @@ func TestForEach(t *testing.T) {
 	})
 }
 
-func TestKeysAndValues(t *testing.T) {
-	m := New[string, int]()
-
-	m.Put("a", 1)
-	m.Put("b", 2)
-	m.Put("c", 3)
-	m.Put("d", 4)
-	m.Put("e", 5)
-
-	var i int
-	for range m.Keys() {
-		i++
-	}
-	assert.Eq(t, i, 5)
-
-	i = 0
-	for range m.Values() {
-		i++
-	}
-	assert.Eq(t, i, 5)
-}
-
 func BenchmarkPut(b *testing.B) {
 	m := New[string, int]()
 
@@ -220,5 +198,21 @@ func BenchmarkGet(b *testing.B) {
 
 	for x := 0; x < b.N; x++ {
 		m.Get("foo")
+	}
+}
+
+func BenchmarkForEach(b *testing.B) {
+	m := New[int, int]()
+
+	for x := 0; x < 1_000_000; x++ {
+		m.Put(x, x)
+	}
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for x := 0; x < b.N; x++ {
+		m.ForEach(func(key int, val int) {
+		})
 	}
 }

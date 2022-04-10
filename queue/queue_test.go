@@ -182,29 +182,6 @@ func TestForEach(t *testing.T) {
 	})
 }
 
-func TestValues(t *testing.T) {
-	t.Parallel()
-
-	q := New[int]()
-
-	q.Enqueue(1)
-	q.Enqueue(2)
-	q.Enqueue(3)
-	q.Enqueue(4)
-	q.Enqueue(5)
-
-	i := 1
-	for val := range q.Values() {
-		assert.Eq(t, val, i)
-		i++
-	}
-
-	q.Clear()
-	for range q.Values() {
-		t.Errorf("queue not cleared")
-	}
-}
-
 func BenchmarkQueue(b *testing.B) {
 	q := New[int]()
 
@@ -214,5 +191,21 @@ func BenchmarkQueue(b *testing.B) {
 	for x := 0; x < b.N; x++ {
 		q.Enqueue(x)
 		q.Dequeue()
+	}
+}
+
+func BenchmarkForEach(b *testing.B) {
+	q := New[int]()
+
+	for x := 0; x < 1_000_000; x++ {
+		q.Enqueue(x)
+	}
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for x := 0; x < b.N; x++ {
+		q.ForEach(func(val int) {
+		})
 	}
 }

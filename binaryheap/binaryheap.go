@@ -171,19 +171,3 @@ func (b BinaryHeap[T]) ForEach(f func(val T)) {
 		f(v)
 	}
 }
-
-// Values returns the values delivered through a channel. This is safe to be
-// called in a for/range loop as it only creates one channel.
-func (b BinaryHeap[T]) Values() chan T {
-	b.sort()
-	c := make(chan T)
-
-	go func() {
-		for _, v := range b.data {
-			c <- v
-		}
-		close(c)
-	}()
-
-	return c
-}

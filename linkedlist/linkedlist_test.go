@@ -430,37 +430,30 @@ func TestForEach(t *testing.T) {
 	})
 }
 
-func TestValues(t *testing.T) {
-	t.Parallel()
-
-	l := New[int]()
-
-	l.InsertLast(1)
-	l.InsertLast(2)
-	l.InsertLast(3)
-	l.InsertLast(4)
-	l.InsertLast(5)
-
-	i := 1
-	for val := range l.Values() {
-		assert.Eq(t, val, i)
-		i++
-	}
-
-	l.Clear()
-	for range l.Values() {
-		t.Errorf("linked list not cleared")
-	}
-}
-
 func BenchmarkLinkedList(b *testing.B) {
-	s := New[int]()
+	l := New[int]()
 
 	b.ReportAllocs()
 	b.ResetTimer()
 
 	for x := 0; x < b.N; x++ {
-		s.InsertLast(x)
-		s.RemoveLast()
+		l.InsertLast(x)
+		l.RemoveLast()
+	}
+}
+
+func BenchmarkForEach(b *testing.B) {
+	l := New[int]()
+
+	for x := 0; x < 1_000_000; x++ {
+		l.InsertLast(x)
+	}
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for x := 0; x < b.N; x++ {
+		l.ForEach(func(index int, val int) {
+		})
 	}
 }

@@ -182,29 +182,6 @@ func TestForEach(t *testing.T) {
 	})
 }
 
-func TestValues(t *testing.T) {
-	t.Parallel()
-
-	s := New[int]()
-
-	s.Push(1)
-	s.Push(2)
-	s.Push(3)
-	s.Push(4)
-	s.Push(5)
-
-	i := s.Count()
-	for val := range s.Values() {
-		assert.Eq(t, val, i)
-		i--
-	}
-
-	s.Clear()
-	for range s.Values() {
-		t.Errorf("stack not cleared")
-	}
-}
-
 func BenchmarkStack(b *testing.B) {
 	s := New[int]()
 
@@ -214,5 +191,21 @@ func BenchmarkStack(b *testing.B) {
 	for x := 0; x < b.N; x++ {
 		s.Push(x)
 		s.Pop()
+	}
+}
+
+func BenchmarkForEach(b *testing.B) {
+	s := New[int]()
+
+	for x := 0; x < 1_000_000; x++ {
+		s.Push(x)
+	}
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for x := 0; x < b.N; x++ {
+		s.ForEach(func(val int) {
+		})
 	}
 }
