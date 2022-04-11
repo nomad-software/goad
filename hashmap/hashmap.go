@@ -166,20 +166,3 @@ func (m HashMap[K, V]) ForEach(f func(key K, val V)) {
 		})
 	}
 }
-
-// Keys returns the keys delivered through a channel. This is safe to be
-// called in a for/range loop as it only creates one channel.
-func (m HashMap[K, V]) Keys() chan K {
-	c := make(chan K)
-
-	go func() {
-		for _, ln := range m.data {
-			ln.ForEach(func(i int, p payload[K, V]) {
-				c <- p.key
-			})
-		}
-		close(c)
-	}()
-
-	return c
-}
