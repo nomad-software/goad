@@ -3,7 +3,7 @@ package linkedlist
 import (
 	"testing"
 
-	"github.com/nomad-software/goad/assert"
+	"github.com/nomad-software/assert"
 )
 
 func TestNew(t *testing.T) {

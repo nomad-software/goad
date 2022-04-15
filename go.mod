@@ -2,4 +2,7 @@ module github.com/nomad-software/goad
 
 go 1.18
 
-require golang.org/x/exp v0.0.0-20220407100705-7b9b53b0aca4 // indirect
+require (
+	github.com/nomad-software/assert v0.0.0-20220415191247-d429162c030f
+	golang.org/x/exp v0.0.0-20220414153411-bcd21879b8fd
+)
