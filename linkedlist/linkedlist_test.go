@@ -430,7 +430,7 @@ func TestForEach(t *testing.T) {
 	})
 }
 
-func BenchmarkLinkedList(b *testing.B) {
+func BenchmarkLinkedListInsertAndRemove(b *testing.B) {
 	l := New[int]()
 
 	b.ReportAllocs()
@@ -442,7 +442,7 @@ func BenchmarkLinkedList(b *testing.B) {
 	}
 }
 
-func BenchmarkForEach(b *testing.B) {
+func BenchmarkLinkedListForEach(b *testing.B) {
 	l := New[int]()
 
 	for x := 0; x < 1_000_000; x++ {
@@ -453,7 +453,6 @@ func BenchmarkForEach(b *testing.B) {
 	b.ResetTimer()
 
 	for x := 0; x < b.N; x++ {
-		l.ForEach(func(index int, val int) {
-		})
+		l.ForEach(func(index int, val int) {})
 	}
 }

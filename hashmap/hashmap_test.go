@@ -1,6 +1,7 @@
 package hashmap
 
 import (
+	"strconv"
 	"testing"
 
 	"github.com/nomad-software/assert"
@@ -178,7 +179,7 @@ func TestForEach(t *testing.T) {
 	})
 }
 
-func BenchmarkPut(b *testing.B) {
+func BenchmarkHashMapPut(b *testing.B) {
 	m := New[string, int]()
 
 	b.ReportAllocs()
@@ -189,19 +190,22 @@ func BenchmarkPut(b *testing.B) {
 	}
 }
 
-func BenchmarkGet(b *testing.B) {
+func BenchmarkHashMapGet(b *testing.B) {
 	m := New[string, int]()
-	m.Put("foo", 1337)
+
+	for x := 0; x < 1_000_000; x++ {
+		m.Put(strconv.Itoa(x), x)
+	}
 
 	b.ReportAllocs()
 	b.ResetTimer()
 
 	for x := 0; x < b.N; x++ {
-		m.Get("foo")
+		m.Get("500000")
 	}
 }
 
-func BenchmarkForEach(b *testing.B) {
+func BenchmarkHashMapForEach(b *testing.B) {
 	m := New[int, int]()
 
 	for x := 0; x < 1_000_000; x++ {
@@ -212,7 +216,6 @@ func BenchmarkForEach(b *testing.B) {
 	b.ResetTimer()
 
 	for x := 0; x < b.N; x++ {
-		m.ForEach(func(key int, val int) {
-		})
+		m.ForEach(func(key int, val int) {})
 	}
 }

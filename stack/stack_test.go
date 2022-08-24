@@ -182,7 +182,7 @@ func TestForEach(t *testing.T) {
 	})
 }
 
-func BenchmarkStack(b *testing.B) {
+func BenchmarkStackPushAndPop(b *testing.B) {
 	s := New[int]()
 
 	b.ReportAllocs()
@@ -194,7 +194,7 @@ func BenchmarkStack(b *testing.B) {
 	}
 }
 
-func BenchmarkForEach(b *testing.B) {
+func BenchmarkStackForEach(b *testing.B) {
 	s := New[int]()
 
 	for x := 0; x < 1_000_000; x++ {
@@ -205,7 +205,6 @@ func BenchmarkForEach(b *testing.B) {
 	b.ResetTimer()
 
 	for x := 0; x < b.N; x++ {
-		s.ForEach(func(val int) {
-		})
+		s.ForEach(func(val int) {})
 	}
 }

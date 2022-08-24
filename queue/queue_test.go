@@ -182,7 +182,7 @@ func TestForEach(t *testing.T) {
 	})
 }
 
-func BenchmarkQueue(b *testing.B) {
+func BenchmarkQueueEnqueueAndDequeue(b *testing.B) {
 	q := New[int]()
 
 	b.ReportAllocs()
@@ -194,7 +194,7 @@ func BenchmarkQueue(b *testing.B) {
 	}
 }
 
-func BenchmarkForEach(b *testing.B) {
+func BenchmarkQueueForEach(b *testing.B) {
 	q := New[int]()
 
 	for x := 0; x < 1_000_000; x++ {
@@ -205,7 +205,6 @@ func BenchmarkForEach(b *testing.B) {
 	b.ResetTimer()
 
 	for x := 0; x < b.N; x++ {
-		q.ForEach(func(val int) {
-		})
+		q.ForEach(func(val int) {})
 	}
 }

@@ -176,7 +176,7 @@ func TestForEach(t *testing.T) {
 	})
 }
 
-func BenchmarkBinaryHeap(b *testing.B) {
+func BenchmarkBinaryHeapInsert(b *testing.B) {
 	h := New(func(a, b int) bool { return a < b })
 
 	b.ReportAllocs()
@@ -187,7 +187,7 @@ func BenchmarkBinaryHeap(b *testing.B) {
 	}
 }
 
-func BenchmarkForEach(b *testing.B) {
+func BenchmarkBinaryHeapForEach(b *testing.B) {
 	h := New(func(a, b int) bool { return a < b })
 
 	for x := 0; x < 1_000_000; x++ {
@@ -198,7 +198,6 @@ func BenchmarkForEach(b *testing.B) {
 	b.ResetTimer()
 
 	for x := 0; x < b.N; x++ {
-		h.ForEach(func(val int) {
-		})
+		h.ForEach(func(val int) {})
 	}
 }

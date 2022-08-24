@@ -7,14 +7,14 @@ import (
 	"github.com/nomad-software/assert"
 )
 
-func TestHashingBooleans(t *testing.T) {
+func TestHashBooleans(t *testing.T) {
 	t.Parallel()
 
 	assert.True(t, Hash(true) > 0)
 	assert.True(t, Hash(false) > 0)
 }
 
-func TestHashingNumbers(t *testing.T) {
+func TestHashNumbers(t *testing.T) {
 	t.Parallel()
 
 	assert.True(t, Hash(123) > 0)
@@ -36,14 +36,14 @@ func TestHashingNumbers(t *testing.T) {
 	assert.True(t, Hash(complex128(complex(3, -5))) > 0)
 }
 
-func TestHashingStrings(t *testing.T) {
+func TestHashStrings(t *testing.T) {
 	t.Parallel()
 
 	assert.True(t, Hash("foo") > 0)
 	assert.True(t, Hash("bar") > 0)
 }
 
-func TestHashingPointers(t *testing.T) {
+func TestHashPointers(t *testing.T) {
 	t.Parallel()
 
 	p1 := true
@@ -79,7 +79,7 @@ func TestHashingPointers(t *testing.T) {
 	assert.True(t, Hash(p15) > 0)
 }
 
-func TestHashingChannels(t *testing.T) {
+func TestHashChannels(t *testing.T) {
 	t.Parallel()
 
 	c1 := make(chan int)
@@ -100,7 +100,7 @@ func TestHashingChannels(t *testing.T) {
 	assert.True(t, Hash(&c5) > 0)
 }
 
-func TestHashingArrays(t *testing.T) {
+func TestHashArrays(t *testing.T) {
 	t.Parallel()
 
 	p1 := 123
@@ -118,7 +118,7 @@ type foo struct {
 	bar string
 }
 
-func TestHashingStructs(t *testing.T) {
+func TestHashStructs(t *testing.T) {
 	t.Parallel()
 
 	assert.True(t, Hash(foo{}) > 0)
@@ -138,7 +138,7 @@ func (h baz) Hash() uint32 {
 	return HashBytes(buf.Bytes())
 }
 
-func TestHashingHashers(t *testing.T) {
+func TestHashHashers(t *testing.T) {
 	t.Parallel()
 
 	assert.True(t, Hash(baz{}) > 0)
@@ -153,7 +153,7 @@ func TestHashBytes(t *testing.T) {
 	assert.True(t, HashBytes([]byte{6, 7, 8, 9, 10}) > 0)
 }
 
-func BenchmarkHashingInt(b *testing.B) {
+func BenchmarkHashInt(b *testing.B) {
 	b.ReportAllocs()
 
 	for x := 0; x < b.N; x++ {
@@ -161,7 +161,7 @@ func BenchmarkHashingInt(b *testing.B) {
 	}
 }
 
-func BenchmarkHashingIntPtr(b *testing.B) {
+func BenchmarkHashIntPtr(b *testing.B) {
 	b.ReportAllocs()
 
 	for x := 0; x < b.N; x++ {
@@ -169,7 +169,7 @@ func BenchmarkHashingIntPtr(b *testing.B) {
 	}
 }
 
-func BenchmarkHashingUint(b *testing.B) {
+func BenchmarkHashUint(b *testing.B) {
 	b.ReportAllocs()
 
 	var i uint
@@ -179,7 +179,7 @@ func BenchmarkHashingUint(b *testing.B) {
 	}
 }
 
-func BenchmarkHashingUintPtr(b *testing.B) {
+func BenchmarkHashUintPtr(b *testing.B) {
 	b.ReportAllocs()
 
 	var i uint
@@ -189,7 +189,7 @@ func BenchmarkHashingUintPtr(b *testing.B) {
 	}
 }
 
-func BenchmarkHashingStrings(b *testing.B) {
+func BenchmarkHashStrings(b *testing.B) {
 	b.ReportAllocs()
 
 	for x := 0; x < b.N; x++ {
@@ -197,7 +197,7 @@ func BenchmarkHashingStrings(b *testing.B) {
 	}
 }
 
-func BenchmarkHashingStringPtr(b *testing.B) {
+func BenchmarkHashStringPtr(b *testing.B) {
 	b.ReportAllocs()
 
 	str := "foo bar baz qux"
@@ -206,7 +206,7 @@ func BenchmarkHashingStringPtr(b *testing.B) {
 	}
 }
 
-func BenchmarkHashingStructs(b *testing.B) {
+func BenchmarkHashStructs(b *testing.B) {
 	b.ReportAllocs()
 
 	for x := 0; x < b.N; x++ {
@@ -214,7 +214,7 @@ func BenchmarkHashingStructs(b *testing.B) {
 	}
 }
 
-func BenchmarkHashingHashers(b *testing.B) {
+func BenchmarkHashHashers(b *testing.B) {
 	b.ReportAllocs()
 
 	for x := 0; x < b.N; x++ {
