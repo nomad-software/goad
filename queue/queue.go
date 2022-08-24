@@ -54,7 +54,7 @@ func (q Queue[T]) Contains(val T) bool {
 
 // Clear empties the entire queue.
 func (q *Queue[T]) Clear() {
-	q.data = q.data[:0]
+	q.data = q.data[:0:0]
 }
 
 // ForEach iterates over the dataset within the queue, calling the passed

@@ -148,7 +148,7 @@ func (b BinaryHeap[T]) Contains(val T) bool {
 
 // Clear empties the entire heap.
 func (b *BinaryHeap[T]) Clear() {
-	b.data = b.data[:0]
+	b.data = b.data[:0:0]
 }
 
 // Sort the heap ready for iterating.

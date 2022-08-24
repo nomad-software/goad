@@ -55,7 +55,7 @@ func (s Stack[T]) Contains(val T) bool {
 
 // Clear empties the entire stack.
 func (s *Stack[T]) Clear() {
-	s.data = s.data[:0]
+	s.data = s.data[:0:0]
 }
 
 // ForEach iterates over the dataset within the stack, calling the passed
