@@ -1,6 +1,6 @@
 module github.com/nomad-software/goad
 
-go 1.18
+go 1.22
 
 require (
 	github.com/nomad-software/assert v0.0.0-20220415191247-d429162c030f
